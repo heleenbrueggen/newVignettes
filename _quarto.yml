@@ -1,0 +1,33 @@
+project:
+  type: book
+
+book:
+  title: "newVignettesBook"
+  author: "**Mice Development Team**"
+  date: last-modified
+  chapters:
+    - index.qmd
+    - intro.qmd
+    - Adhoc_methods_and_mice.qmd
+    - Convergence_and_pooling.qmd
+    - The_imputation_and_nonresponse_models.qmd
+    - Passive_imputation_and_Post-processing.qmd
+    - CombiningInferences.qmd
+    - Imputing_multilevel_data.qmd
+    - SenstivityAnalysis.qmd
+    - Vignette_futuremice.qmd
+    - mpmm_vignette.qmd
+    - synthetic.qmd
+    - references.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    toc-depth: 3
+    theme: cosmo
+  pdf:
+    documentclass: scrreprt
+
+
+
