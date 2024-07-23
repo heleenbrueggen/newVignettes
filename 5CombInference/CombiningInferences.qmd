@@ -1,8 +1,8 @@
 ---
 title: "`mice`: Combining inferences"
 author: "**Mice Development Team**"
-subtitle: "Multiple Imputation in Practice"
-Description: "Vignette 6 of 10"
+# subtitle: "Multiple Imputation in Practice"
+subtitle: "**Vignette 5 of 10**"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 format:
   html:

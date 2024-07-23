@@ -1,7 +1,7 @@
 ---
 title: "`mice`: Algorithmic convergence and inference pooling"
 author: "**Mice Development Team**"
-description: "**Vignette 2 of 10**"
+subtitle: "**Vignette 2 of 10**"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 editor: source
 vignette: >
