@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "newVignettesBook",
     "section": "",
-    "text": "Preface\nThis is a Quarto book.\nTo learn more about Quarto books visit https://quarto.org/docs/books.",
+    "text": "Preface\n\n\n\nDOI\n\n\n\n\nMice vignettes in a new style.\nNew and improved quarto-based mice vignettes with ggmice plots, accessible data for sensitivity analysis and many bug-fixes.\nWe suggest going through these vignettes in the following order\n\n1. Ad Hoc methods and the mice algorithm\n2. Convergence and pooling\n3. Inspecting how the observed data and missingness are related\n4. Passive imputation and post-processing\n5. Combining inferences\n6. Imputing multi-level data\n7. Sensitivity analysis with mice\n\nGenerating the synthetic set in Vignette 7\n\n8. futuremice: Wrapper for parallel mice imputation through futures\n9. Multivariate PMM for imputing multiple columns simultaneously\n10. Generating synthetic data with high utility using mice\n\n\nAll the best,\nThe mice development team\n\n\n\nContributors\nWith contributions by (in alphabetical order):\n\nGerko Vink\nHanne Oberman\nHuma Shehwana\nMingyang Cai\nStef van Buuren\nThom Volker\n\n\n\nLicense\nShield: \nThis work is licensed under a Creative Commons Attribution 4.0 International License.\n\n\n\nCC BY 4.0",
     "crumbs": [
       "Preface"
     ]
