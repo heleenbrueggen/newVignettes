@@ -8,7 +8,6 @@ book:
   date: last-modified
   chapters:
     - index.qmd
-    - intro.qmd
     - 1AdHoc/Adhoc_methods_and_mice.qmd
     - 2ConvPool/Convergence_and_pooling.qmd
     - 3Inspect/The_imputation_and_nonresponse_models.qmd

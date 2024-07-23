@@ -10,7 +10,7 @@
 <meta name="dcterms.date" content="2024-07-23">
 <meta name="description" content="Vignette 1 of 10">
 
-<title>newVignettesBook - 2&nbsp; Ad hoc methods and mice</title>
+<title>newVignettesBook - 1&nbsp; Ad hoc methods and mice</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -57,7 +57,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -68,7 +88,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
 <link href="../2ConvPool/Convergence_and_pooling.html" rel="next">
-<link href="../intro.html" rel="prev">
+<link href="../index.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -147,7 +167,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../1AdHoc/Adhoc_methods_and_mice.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Ad hoc methods and `mice`</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../1AdHoc/Adhoc_methods_and_mice.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Ad hoc methods and `mice`</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -180,68 +200,62 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../1AdHoc/Adhoc_methods_and_mice.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Ad hoc methods and `mice`</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Ad hoc methods and `mice`</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../2ConvPool/Convergence_and_pooling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">`mice`: Algorithmic convergence and inference pooling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">`mice`: Algorithmic convergence and inference pooling</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../3Inspect/The_imputation_and_nonresponse_models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">`mice`: The imputation and nonresponse models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">`mice`: The imputation and nonresponse models</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../4PassivePostProcess/Passive_imputation_and_Post-processing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">`mice`: Passive imputation and Post-processing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">`mice`: Passive imputation and Post-processing</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../5CombInference/CombiningInferences.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">`mice`: Combining inferences</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">`mice`: Combining inferences</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../6MultiLevel/Imputing_multilevel_data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">`mice`: Imputing multi-level data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">`mice`: Imputing multi-level data</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../7Sensitivity/SenstivityAnalysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">`mice`: An approach to sensitivity analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">`mice`: An approach to sensitivity analysis</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../8FutureMice/Vignette_futuremice.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Wrapper function `futuremice`</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Wrapper function `futuremice`</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../9Mpmm/mpmm_vignette.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Multivariate predictive mean matching</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Multivariate predictive mean matching</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../10Synthetic/synthetic.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Synthetic data in `R`: Generating synthetic data with high utility using `mice`</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Synthetic data in `R`: Generating synthetic data with high utility using `mice`</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -263,7 +277,8 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Ad hoc methods and <code>mice</code></span></h1>
+<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Ad hoc methods and <code>mice</code></span></h1>
+<p class="subtitle lead"><strong>Vignette 1 of 10</strong></p>
 </div>
 
 
@@ -321,12 +336,12 @@ pre { /* Code block - determines code spacing between lines */
 }
 </style>
 <hr>
-<p>This is the first vignette in a series of ten. It will give you an introduction to the <code>R</code>-package <code>mice</code>, an open-source tool for flexible imputation of incomplete data, developed by Stef van Buuren and Karin Groothuis-Oudshoorn (2011). Over the last decade, <code>mice</code> has become an important piece of imputation software, offering a very flexible environment for dealing with incomplete data. Moreover, the ability to integrate <code>mice</code> with other packages in <code>R</code>, and vice versa, offers many options for applied researchers.</p>
+<p>This is the first vignette in a series of ten. It will give you an introduction to the <code>R</code>-package <code>mice</code>, an open-source tool for flexible imputation of incomplete data, developed by Stef van Buuren and Karin Groothuis-Oudshoorn -<span class="citation" data-cites="van2011mice">Van Buuren and Groothuis-Oudshoorn (<a href="../references.html#ref-van2011mice" role="doc-biblioref">2011</a>)</span>. Over the last decade, <code>mice</code> has become an important piece of imputation software, offering a very flexible environment for dealing with incomplete data. Moreover, the ability to integrate <code>mice</code> with other packages in <code>R</code>, and vice versa, offers many options for applied researchers.</p>
 <p>The aim of this introduction is to enhance your understanding of multiple imputation, in general. You will learn how to multiply impute simple datasets and how to obtain the imputed data for further analysis. The main objective is to increase your knowledge and understanding on applications of multiple imputation.</p>
 <p>No previous experience with <code>R</code> is required.</p>
 <hr>
-<section id="working-with-mice" class="level4" data-number="2.0.0.1">
-<h4 data-number="2.0.0.1" class="anchored" data-anchor-id="working-with-mice"><span class="header-section-number">2.0.0.1</span> Working with mice</h4>
+<section id="working-with-mice" class="level4" data-number="1.0.0.1">
+<h4 data-number="1.0.0.1" class="anchored" data-anchor-id="working-with-mice"><span class="header-section-number">1.0.0.1</span> Working with mice</h4>
 <hr>
 <p><strong>1. Open <code>R</code> and load the packages <code>mice</code> and <code>lattice</code></strong></p>
 <div class="cell">
@@ -340,7 +355,7 @@ pre { /* Code block - determines code spacing between lines */
 </div>
 <hr>
 <p><strong>2. Inspect the incomplete data</strong></p>
-<p>The <code>mice</code> package contains several datasets. Once the package is loaded, these datasets can be used. Have a look at the <code>nhanes</code> dataset (Schafer, 1997, Table 6.14) by typing</p>
+<p>The <code>mice</code> package contains several datasets. Once the package is loaded, these datasets can be used. Have a look at the <code>nhanes</code> dataset <span class="citation" data-cites="schafer1997analysis">(<a href="../references.html#ref-schafer1997analysis" role="doc-biblioref">Schafer 1997</a>, Table 6.14)</span> by typing</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>nhanes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -417,8 +432,8 @@ pre { /* Code block - determines code spacing between lines */
 </div>
 <p>The missingness pattern shows that there are 27 missing values in total: 10 for <code>chl</code> , 9 for <code>bmi</code> and 8 for <code>hyp</code>. Moreover, there are thirteen completely observed rows, four rows with 1 missing, one row with 2 missings and seven rows with 3 missings. Looking at the missing data pattern is always useful (but may be difficult for datasets with many variables). It can give you an indication on how much information is missing and how the missingness is distributed.</p>
 <hr>
-<section id="ad-hoc-imputation-methods" class="level5" data-number="2.0.0.1.1">
-<h5 data-number="2.0.0.1.1" class="anchored" data-anchor-id="ad-hoc-imputation-methods"><span class="header-section-number">2.0.0.1.1</span> Ad Hoc imputation methods</h5>
+<section id="ad-hoc-imputation-methods" class="level5" data-number="1.0.0.1.1">
+<h5 data-number="1.0.0.1.1" class="anchored" data-anchor-id="ad-hoc-imputation-methods"><span class="header-section-number">1.0.0.1.1</span> Ad Hoc imputation methods</h5>
 <hr>
 <p><strong>5. Form a regression model where <code>age</code> is predicted from <code>bmi</code>. </strong></p>
 <div class="cell">
@@ -590,7 +605,7 @@ F-statistic: 2.246 on 1 and 14 DF,  p-value: 0.1561</code></pre>
   1   1  bmi  hyp  chl</code></pre>
 </div>
 </div>
-<p>The imputations are now done. This code imputes the missing values in the data set by the stochastic regression imputation method. The function does not incorporate the variability of the regression weights, so it is not ‘proper’ in the sense of Rubin (1987). For small samples, the variability of the imputed data will be underestimated.</p>
+<p>The imputations are now done. This code imputes the missing values in the data set by the stochastic regression imputation method. The function does not incorporate the variability of the regression weights, so it is not ‘proper’ in the sense of <span class="citation" data-cites="rubin2004multiple">Rubin (<a href="../references.html#ref-rubin2004multiple" role="doc-biblioref">2004</a>)</span>. For small samples, the variability of the imputed data will be underestimated.</p>
 <hr>
 <p><strong>11. Again, inspect the completed data and investigate the imputed data regression model. </strong></p>
 <div class="cell">
@@ -658,8 +673,8 @@ F-statistic: 2.246 on 1 and 14 DF,  p-value: 0.1561</code></pre>
 <hr>
 </section>
 </section>
-<section id="multiple-imputation" class="level4" data-number="2.0.0.2">
-<h4 data-number="2.0.0.2" class="anchored" data-anchor-id="multiple-imputation"><span class="header-section-number">2.0.0.2</span> Multiple imputation</h4>
+<section id="multiple-imputation" class="level4" data-number="1.0.0.2">
+<h4 data-number="1.0.0.2" class="anchored" data-anchor-id="multiple-imputation"><span class="header-section-number">1.0.0.2</span> Multiple imputation</h4>
 <hr>
 <p><strong>13. Let us impute the missing data in the <code>nhanes</code> dataset</strong></p>
 <div class="cell">
@@ -1050,15 +1065,21 @@ $chl
 <p><strong>Conclusion</strong></p>
 <p>We have seen that (multiple) imputation is straightforward with <code>mice</code>. However, don’t let the simplicity of the software fool you into thinking that the problem itself is also straightforward. In the next vignette we will therefore explore how the mice package can flexibly provide us the tools to assess and control the imputation of missing data.</p>
 <hr>
-<p><strong>References</strong></p>
-<p>Rubin, D. B. <em>Multiple imputation for nonresponse in surveys</em>. John Wiley &amp; Sons, 1987. <a href="http://www.amazon.com/Multiple-Imputation-Nonresponse-Surveys-Donald/dp/0471655740/ref=sr_1_1?ie=UTF8&amp;qid=1434466788&amp;sr=8-1&amp;keywords=Multiple+imputation+for+nonresponse+in+surveys">Amazon</a></p>
-<p>Schafer, J.L. (1997). <em>Analysis of Incomplete Multivariate Data</em>. London: Chapman &amp; Hall. Table 6.14. <a href="http://www.amazon.com/Incomplete-Multivariate-Monographs-Statistics-Probability/dp/0412040611/ref=sr_1_1?ie=UTF8&amp;qid=1434466828&amp;sr=8-1&amp;keywords=Analysis+of+Incomplete+Multivariate+Data">Amazon</a></p>
-<p>Van Buuren, S. and Groothuis-Oudshoorn, K. (2011). mice: Multivariate Imputation by Chained Equations in R. <em>Journal of Statistical Software</em>, 45(3), 1-67. <a href="http://www.jstatsoft.org/v45/i03/paper">pdf</a></p>
-<hr>
 <p><strong>- End of Vignette</strong></p>
 <hr>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-rubin2004multiple" class="csl-entry" role="listitem">
+Rubin, Donald B. 2004. <em>Multiple Imputation for Nonresponse in Surveys</em>. Vol. 81. John Wiley &amp; Sons.
+</div>
+<div id="ref-schafer1997analysis" class="csl-entry" role="listitem">
+Schafer, Joseph L. 1997. <em>Analysis of Incomplete Multivariate Data</em>. CRC press.
+</div>
+<div id="ref-van2011mice" class="csl-entry" role="listitem">
+Van Buuren, Stef, and Karin Groothuis-Oudshoorn. 2011. <span>“Mice: Multivariate Imputation by Chained Equations in r.”</span> <em>Journal of Statistical Software</em> 45: 1–67.
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->
@@ -1446,13 +1467,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../intro.html" class="pagination-link  aria-label=" &lt;span="">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span>
+      <a href="../index.html" class="pagination-link  aria-label=" preface"="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Preface</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../2ConvPool/Convergence_and_pooling.html" class="pagination-link" aria-label="<span class='chapter-number'>3</span>&nbsp; <span class='chapter-title'>`mice`: Algorithmic convergence and inference pooling</span>">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title"><code>mice</code>: Algorithmic convergence and inference pooling</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../2ConvPool/Convergence_and_pooling.html" class="pagination-link" aria-label="<span class='chapter-number'>2</span>&nbsp; <span class='chapter-title'>`mice`: Algorithmic convergence and inference pooling</span>">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title"><code>mice</code>: Algorithmic convergence and inference pooling</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

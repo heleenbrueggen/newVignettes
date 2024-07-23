@@ -1,5 +1,6 @@
 ---
 title: "Ad hoc methods and `mice`"
+subtitle: "**Vignette 1 of 10**"
 author: "**Mice Development Team**"
 description: "**Vignette 1 of 10**"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
@@ -43,7 +44,7 @@ pre { /* Code block - determines code spacing between lines */
 
 
 
-This is the first vignette in a series of ten. It will give you an introduction to the `R`-package `mice`, an open-source tool for flexible imputation of incomplete data, developed by Stef van Buuren and Karin Groothuis-Oudshoorn (2011). Over the last decade, `mice` has become an important piece of imputation software, offering a very flexible environment for dealing with incomplete data. Moreover, the ability to integrate `mice` with other packages in `R`, and vice versa, offers many options for applied researchers.
+This is the first vignette in a series of ten. It will give you an introduction to the `R`-package `mice`, an open-source tool for flexible imputation of incomplete data, developed by Stef van Buuren and Karin Groothuis-Oudshoorn -@van2011mice. Over the last decade, `mice` has become an important piece of imputation software, offering a very flexible environment for dealing with incomplete data. Moreover, the ability to integrate `mice` with other packages in `R`, and vice versa, offers many options for applied researchers.
 
 The aim of this introduction is to enhance your understanding of multiple imputation, in general. You will learn how to multiply impute simple datasets and how to obtain the imputed data for further analysis. The main objective is to increase your knowledge and understanding on applications of multiple imputation. 
 
@@ -72,7 +73,7 @@ install.packages("mice")
 
 **2.  Inspect the incomplete data**
 
-The `mice` package contains several datasets. Once the package is loaded, these datasets can be used. Have a look at the `nhanes` dataset (Schafer, 1997, Table 6.14) by typing
+The `mice` package contains several datasets. Once the package is loaded, these datasets can be used. Have a look at the `nhanes` dataset [@schafer1997analysis, Table 6.14] by typing
 ```{r, cache = FALSE}
 nhanes
 ```
@@ -182,7 +183,7 @@ It is clear that something has changed. In fact, we extrapolated (part of) the r
 ```{r, cache=TRUE}
 imp <- mice(nhanes, method = "norm.nob", m = 1, maxit = 1)
 ```
-The imputations are now done. This code imputes the missing values in the data set by the stochastic regression imputation method. The function does not incorporate the variability of the regression weights, so it is not 'proper' in the sense of Rubin (1987). For small samples, the variability of the imputed data will be underestimated. 
+The imputations are now done. This code imputes the missing values in the data set by the stochastic regression imputation method. The function does not incorporate the variability of the regression weights, so it is not 'proper' in the sense of @rubin2004multiple. For small samples, the variability of the imputed data will be underestimated. 
 
 ---
 
@@ -274,16 +275,6 @@ are completed data sets in long and broad format, respectively. See `?complete` 
 **Conclusion** 
 
 We have seen that (multiple) imputation is straightforward with `mice`. However, don't let the simplicity of the software fool you into thinking that the problem itself is also straightforward. In the next vignette we will therefore explore how the mice package can flexibly provide us the tools to assess and control the imputation of missing data.
-
----
-
-**References**
-
-Rubin, D. B. *Multiple imputation for nonresponse in surveys*. John Wiley & Sons, 1987. [Amazon](http://www.amazon.com/Multiple-Imputation-Nonresponse-Surveys-Donald/dp/0471655740/ref=sr_1_1?ie=UTF8&qid=1434466788&sr=8-1&keywords=Multiple+imputation+for+nonresponse+in+surveys)
-
-Schafer, J.L. (1997). *Analysis of Incomplete Multivariate Data*. London: Chapman & Hall. Table 6.14. [Amazon](http://www.amazon.com/Incomplete-Multivariate-Monographs-Statistics-Probability/dp/0412040611/ref=sr_1_1?ie=UTF8&qid=1434466828&sr=8-1&keywords=Analysis+of+Incomplete+Multivariate+Data)
-
-Van Buuren, S. and Groothuis-Oudshoorn, K. (2011). mice: Multivariate Imputation by Chained Equations in R. *Journal of Statistical Software*, 45(3), 1-67. [pdf](http://www.jstatsoft.org/v45/i03/paper)
 
 ---
 
