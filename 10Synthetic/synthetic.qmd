@@ -3,7 +3,6 @@ title: "Synthetic data in `R`: Generating synthetic data with high utility using
 author: "Thom Volker and Gerko Vink"
 subtitle: "**Vignette 10 of 10**"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-bibliography: files/synthetic-osf-workshop.bib
 link-citations: true
 format: 
   html:

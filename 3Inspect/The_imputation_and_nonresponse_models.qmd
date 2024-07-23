@@ -246,7 +246,7 @@ plot(impnew)
 
 Even though the fraction of information missing due to nonresponse (fmi) and the relative increase in variance due to nonresponse (lambda) are nice and low, the convergence turns out to be a real problem. The reason is the structure in the data. Total sleep (`ts`) is the sum of paradoxical sleep (`ps`) and short wave sleep (`sws`). This relation is ignored in the imputations, but it is necessary to take this relation into account. `mice` offers a routine called passive imputation, which allows users to take transformations, combinations and recoded variables into account when imputing their data.
 
-We explain passive imputation in detail in the [this vignette](https://gerkovink.github.io/miceVignettes/Passive_Post_processing/Passive_imputation_post_processing.html).
+We explain passive imputation in detail in Chapter 4.
 
 ### Conclusion
 

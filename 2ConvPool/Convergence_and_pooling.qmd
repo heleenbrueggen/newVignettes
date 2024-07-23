@@ -260,13 +260,7 @@ summary(pool.fit)
 
 which gives the relevant pooled regression coefficients and parameters, as well as the fraction of information about the coefficients missing due to nonresponse (`fmi`) and the proportion of the variation attributable to the missing data (`lambda`). The pooled fit object is of class `mipo`, which stands for *multiply imputed pooled object*.
 
-`mice` is able to pool many analyses from a variety of packages for you, as long as the functions adhere to the `coef` method convention in R. For flexibility and in order to run custom pooling functions, mice also incorporates a function `pool.scalar()` which pools univariate estimates of $m$ repeated complete data analysis conform Rubin's pooling rules (Rubin, 1987, paragraph 3.1)
-
-------------------------------------------------------------------------
-
-**References**
-
-Rubin, D. B. *Multiple imputation for nonresponse in surveys*. John Wiley & Sons, 1987. [Amazon](http://www.amazon.com/Multiple-Imputation-Nonresponse-Surveys-Donald/dp/0471655740/ref=sr_1_1?ie=UTF8&qid=1434466788&sr=8-1&keywords=Multiple+imputation+for+nonresponse+in+surveys)
+`mice` is able to pool many analyses from a variety of packages for you, as long as the functions adhere to the `coef` method convention in R. For flexibility and in order to run custom pooling functions, mice also incorporates a function `pool.scalar()` which pools univariate estimates of $m$ repeated complete data analysis conform Rubin's pooling rules [@rubin2004multiple, paragraph 3.1]
 
 ------------------------------------------------------------------------
 

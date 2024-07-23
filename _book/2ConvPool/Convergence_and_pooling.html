@@ -56,7 +56,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -673,15 +693,17 @@ F-statistic: 1.646 on 1 and 23 DF,  p-value: 0.2122</code></pre>
 </div>
 </div>
 <p>which gives the relevant pooled regression coefficients and parameters, as well as the fraction of information about the coefficients missing due to nonresponse (<code>fmi</code>) and the proportion of the variation attributable to the missing data (<code>lambda</code>). The pooled fit object is of class <code>mipo</code>, which stands for <em>multiply imputed pooled object</em>.</p>
-<p><code>mice</code> is able to pool many analyses from a variety of packages for you, as long as the functions adhere to the <code>coef</code> method convention in R. For flexibility and in order to run custom pooling functions, mice also incorporates a function <code>pool.scalar()</code> which pools univariate estimates of <span class="math inline">\(m\)</span> repeated complete data analysis conform Rubin’s pooling rules (Rubin, 1987, paragraph 3.1)</p>
-<hr>
-<p><strong>References</strong></p>
-<p>Rubin, D. B. <em>Multiple imputation for nonresponse in surveys</em>. John Wiley &amp; Sons, 1987. <a href="http://www.amazon.com/Multiple-Imputation-Nonresponse-Surveys-Donald/dp/0471655740/ref=sr_1_1?ie=UTF8&amp;qid=1434466788&amp;sr=8-1&amp;keywords=Multiple+imputation+for+nonresponse+in+surveys">Amazon</a></p>
+<p><code>mice</code> is able to pool many analyses from a variety of packages for you, as long as the functions adhere to the <code>coef</code> method convention in R. For flexibility and in order to run custom pooling functions, mice also incorporates a function <code>pool.scalar()</code> which pools univariate estimates of <span class="math inline">\(m\)</span> repeated complete data analysis conform Rubin’s pooling rules <span class="citation" data-cites="rubin2004multiple">(<a href="../references.html#ref-rubin2004multiple" role="doc-biblioref">Rubin 2004, vol. 81, para. 3.1</a>)</span></p>
 <hr>
 <p><strong>- End of Vignette</strong></p>
 <hr>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-rubin2004multiple" class="csl-entry" role="listitem">
+Rubin, Donald B. 2004. <em>Multiple Imputation for Nonresponse in Surveys</em>. Vol. 81. John Wiley &amp; Sons.
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->

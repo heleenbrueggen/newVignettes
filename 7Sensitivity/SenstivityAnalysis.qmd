@@ -48,7 +48,7 @@ The focus of this document is on sensitivity analysis in the context of missing 
 
 **Data set**
 
-This is a synthetic dataset derived from 956 members of a very old (85+) cohort in Leiden. Unfortunately, we can not share the original leiden dataset with you. Thats why we have provided a synthetic version of leiden dataset. Multiple imputation of original leiden data set has been described in Boshuizen et al (1998), Van Buuren et al (1999) and Van Buuren (2012), chapter 7.
+This is a synthetic dataset derived from 956 members of a very old (85+) cohort in Leiden. Unfortunately, we can not share the original leiden dataset with you. Thats why we have provided a synthetic version of leiden dataset. Multiple imputation of original leiden data set has been described in Boshuizen et al (1998), Van Buuren et al (1999) and Van Buuren [-@van2012flexible], chapter 7.
 
 The main question is how blood pressure affects mortality risk in the oldest old. We have reasons to mistrust the MAR assumption in this case. In particular, we worried whether the imputations of blood pressure under MAR would be low enough. The sensitivity analysis explores the effect of artificially lowering the imputed blood pressure by deducting an amount of δ from the values imputed under MAR. In order to preserve the relations between the variables, this needs to be done during the iterations.
 
@@ -131,7 +131,7 @@ text(6.5, 0.7, "BP measured")
 text(5, 0.3, "BP missing")
 ```
 
-In the next steps we are going to impute `rrsyst` and `rrdiast` under two scenarios: MAR and MNAR. We will use the delta adjustment technique described in paragraph 7.2.3 in Van Buuren (2012)
+In the next steps we are going to impute `rrsyst` and `rrdiast` under two scenarios: MAR and MNAR. We will use the delta adjustment technique described in paragraph 7.2.3 in Van Buuren [-@van2012flexible]
 
 ------------------------------------------------------------------------
 
@@ -225,7 +225,7 @@ cda <- expression(
   )
 ```
 
-See Van Buuren (2012, pp.186) for more information.
+See Van Buuren [-@van2012flexible, pp.186] for more information.
 
 ------------------------------------------------------------------------
 
@@ -278,7 +278,7 @@ All in all, it seems that even big changes to the imputations (e.g. deducting 20
 lm(sws ~ log10(bw) + odi, data = mammalsleep)
 ```
 
-Sensitivity analysis is an important tool for investigating the plausibility of the MAR assumption. We again use the $\delta$-adjustment technique described in Van Buuren (2012, p. 185) as an informal, simple and direct method to create imputations under nonignorable models. We do so by simply adding and substracting some amount from the imputations.
+Sensitivity analysis is an important tool for investigating the plausibility of the MAR assumption. We again use the $\delta$-adjustment technique described in Van Buuren [-@van2012flexible], p. 185] as an informal, simple and direct method to create imputations under nonignorable models. We do so by simply adding and substracting some amount from the imputations.
 
 ```{r}
 delta <- c(8, 6, 4, 2, 0, -2, -4, -6, -8)
@@ -311,19 +311,13 @@ summary(mammalsleep$sws)
 
 we find that even our smallest adjustment ($\delta=|2|$) already makes up almost a quarter of the average `sws`. Choosing unreasonably large values may always influence your estimates. Therefore; choosing values that are reasonable given your suspicions of an assumed breach of the MAR assumption is vital.
 
-We only used a shift parameter here. In other applications, scale or shape parameters could be more natural (see e.g. Van Buuren (2012), Ch. 3.9.1). The calculations are easily adapted to such cases.
+We only used a shift parameter here. In other applications, scale or shape parameters could be more natural (see e.g. Van Buuren [-@van2012flexible, Ch. 3.9.1]). The calculations are easily adapted to such cases.
 
 ------------------------------------------------------------------------
 
 **Conclusion**
 
 We have seen that we can create multiple imputations in multivariate missing data problems that imitate deviations from MAR. The analysis used the `post` argument of the `mice()` function as a hook to alter the imputations just after they have been created by a univariate imputation function. The diagnostics shows that the trick works. The relative mortality estimates are however robust to this type of alteration.
-
-------------------------------------------------------------------------
-
-**References**
-
-Van Buuren, S. (2012), Flexible Imputation of Missing Data. Chapman & Hall/CRC, Boca Raton, FL. ISBN 9781439868249. [CRC Press](https://www.crcpress.com/product/isbn/9781439868249), [Amazon](http://www.amazon.com/Flexible-Imputation-Missing-Interdisciplinary-Statistics/dp/1439868247/ref=sr_1_1?ie=UTF8&qid=1328972069&sr=8-1).
 
 ------------------------------------------------------------------------
 

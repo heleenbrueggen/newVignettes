@@ -9,7 +9,7 @@
 <meta name="author" content="Thom Benjamin Volker &amp; Gerko Vink">
 <meta name="dcterms.date" content="2024-07-23">
 
-<title>newVignettesBook - 9&nbsp; Wrapper function futuremice</title>
+<title>newVignettesBook - 8&nbsp; Wrapper function futuremice</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -56,7 +56,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -146,7 +166,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../8FutureMice/Vignette_futuremice.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Wrapper function `futuremice`</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../8FutureMice/Vignette_futuremice.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Wrapper function `futuremice`</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -179,68 +199,62 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../1AdHoc/Adhoc_methods_and_mice.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Ad hoc methods and `mice`</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Ad hoc methods and `mice`</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../2ConvPool/Convergence_and_pooling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">`mice`: Algorithmic convergence and inference pooling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">`mice`: Algorithmic convergence and inference pooling</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../3Inspect/The_imputation_and_nonresponse_models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">`mice`: The imputation and nonresponse models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">`mice`: The imputation and nonresponse models</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../4PassivePostProcess/Passive_imputation_and_Post-processing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">`mice`: Passive imputation and Post-processing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">`mice`: Passive imputation and Post-processing</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../5CombInference/CombiningInferences.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">`mice`: Combining inferences</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">`mice`: Combining inferences</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../6MultiLevel/Imputing_multilevel_data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">`mice`: Imputing multi-level data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">`mice`: Imputing multi-level data</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../7Sensitivity/SenstivityAnalysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">`mice`: An approach to sensitivity analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">`mice`: An approach to sensitivity analysis</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../8FutureMice/Vignette_futuremice.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Wrapper function `futuremice`</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Wrapper function `futuremice`</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../9Mpmm/mpmm_vignette.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Multivariate predictive mean matching</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Multivariate predictive mean matching</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../10Synthetic/synthetic.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Synthetic data in `R`: Generating synthetic data with high utility using `mice`</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Synthetic data in `R`: Generating synthetic data with high utility using `mice`</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -255,15 +269,15 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#the-future-starts-today" id="toc-the-future-starts-today" class="nav-link active" data-scroll-target="#the-future-starts-today"><span class="header-section-number">9.0.1</span> The future starts today</a></li>
-  <li><a href="#time-gain-with-small-datasets" id="toc-time-gain-with-small-datasets" class="nav-link" data-scroll-target="#time-gain-with-small-datasets"><span class="header-section-number">9.0.2</span> Time gain with small datasets</a></li>
-  <li><a href="#time-gain-with-large-datasets" id="toc-time-gain-with-large-datasets" class="nav-link" data-scroll-target="#time-gain-with-large-datasets"><span class="header-section-number">9.0.3</span> Time gain with large datasets</a></li>
-  <li><a href="#default-settings" id="toc-default-settings" class="nav-link" data-scroll-target="#default-settings"><span class="header-section-number">9.0.4</span> Default settings</a></li>
-  <li><a href="#using-mice-arguments" id="toc-using-mice-arguments" class="nav-link" data-scroll-target="#using-mice-arguments"><span class="header-section-number">9.0.5</span> Using <code>mice</code> arguments</a></li>
-  <li><a href="#argument-n.core" id="toc-argument-n.core" class="nav-link" data-scroll-target="#argument-n.core"><span class="header-section-number">9.0.6</span> Argument <code>n.core</code></a></li>
-  <li><a href="#argument-parallelseed" id="toc-argument-parallelseed" class="nav-link" data-scroll-target="#argument-parallelseed"><span class="header-section-number">9.0.7</span> Argument <code>parallelseed</code></a></li>
-  <li><a href="#systems-other-than-windows" id="toc-systems-other-than-windows" class="nav-link" data-scroll-target="#systems-other-than-windows"><span class="header-section-number">9.0.8</span> Systems other than Windows</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">9.0.9</span> References</a></li>
+  <li><a href="#the-future-starts-today" id="toc-the-future-starts-today" class="nav-link active" data-scroll-target="#the-future-starts-today"><span class="header-section-number">8.0.1</span> The future starts today</a></li>
+  <li><a href="#time-gain-with-small-datasets" id="toc-time-gain-with-small-datasets" class="nav-link" data-scroll-target="#time-gain-with-small-datasets"><span class="header-section-number">8.0.2</span> Time gain with small datasets</a></li>
+  <li><a href="#time-gain-with-large-datasets" id="toc-time-gain-with-large-datasets" class="nav-link" data-scroll-target="#time-gain-with-large-datasets"><span class="header-section-number">8.0.3</span> Time gain with large datasets</a></li>
+  <li><a href="#default-settings" id="toc-default-settings" class="nav-link" data-scroll-target="#default-settings"><span class="header-section-number">8.0.4</span> Default settings</a></li>
+  <li><a href="#using-mice-arguments" id="toc-using-mice-arguments" class="nav-link" data-scroll-target="#using-mice-arguments"><span class="header-section-number">8.0.5</span> Using <code>mice</code> arguments</a></li>
+  <li><a href="#argument-n.core" id="toc-argument-n.core" class="nav-link" data-scroll-target="#argument-n.core"><span class="header-section-number">8.0.6</span> Argument <code>n.core</code></a></li>
+  <li><a href="#argument-parallelseed" id="toc-argument-parallelseed" class="nav-link" data-scroll-target="#argument-parallelseed"><span class="header-section-number">8.0.7</span> Argument <code>parallelseed</code></a></li>
+  <li><a href="#systems-other-than-windows" id="toc-systems-other-than-windows" class="nav-link" data-scroll-target="#systems-other-than-windows"><span class="header-section-number">8.0.8</span> Systems other than Windows</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">8.0.9</span> References</a></li>
   </ul>
 </nav>
 </nav>
@@ -276,7 +290,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Wrapper function <code>futuremice</code></span></h1>
+<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Wrapper function <code>futuremice</code></span></h1>
 <p class="subtitle lead"><strong>Vignette 8 of 10</strong></p>
 </div>
 
@@ -335,17 +349,17 @@ pre { /* Code block - determines code spacing between lines */
 }
 </style>
 <hr>
-<section id="the-future-starts-today" class="level3" data-number="9.0.1">
-<h3 data-number="9.0.1" class="anchored" data-anchor-id="the-future-starts-today"><span class="header-section-number">9.0.1</span> The future starts today</h3>
+<section id="the-future-starts-today" class="level3" data-number="8.0.1">
+<h3 data-number="8.0.1" class="anchored" data-anchor-id="the-future-starts-today"><span class="header-section-number">8.0.1</span> The future starts today</h3>
 <p>This is the eighth vignette in a series of ten.</p>
 <hr>
-<p>For big datasets or high number of imputations, performing multiple imputation with function <code>mice</code> from package <code>mice</code> (Van Buuren &amp; Groothuis-Oudshoorn, 2011) might take a long time. As a solution, wrapper function <code>futuremice</code> was created to enable the imputation procedure to be run in parallel. This is done by dividing the imputations over multiple cores (or CPUs), thus potentially speeding up the process. The function <code>futuremice</code> is a sequel to <code>parlMICE</code> (Schouten &amp; Vink, 2017), developed to improve user-friendliness.</p>
+<p>For big datasets or high number of imputations, performing multiple imputation with function <code>mice</code> from package <code>mice</code> <span class="citation" data-cites="van2011mice">(<a href="../references.html#ref-van2011mice" role="doc-biblioref">Van Buuren and Groothuis-Oudshoorn 2011</a>)</span> might take a long time. As a solution, wrapper function <code>futuremice</code> was created to enable the imputation procedure to be run in parallel. This is done by dividing the imputations over multiple cores (or CPUs), thus potentially speeding up the process. The function <code>futuremice</code> is a sequel to <code>parlMICE</code> (Schouten &amp; Vink, 2017), developed to improve user-friendliness.</p>
 <p>This vignette demonstrates two applications of the <code>futuremice</code> function. The first application shows the tradeoff between time and increasing number of imputations (<span class="math inline">\(m\)</span>) for a small dataset; the second application does the same, but for a relatively large dataset. We also discuss <code>futuremice</code>’s arguments.</p>
 <p>The function <code>futuremice</code> depends on packages <code>future</code>, <code>furrr</code> and <code>mice</code>. For more information about running functions in futures, see e.g.&nbsp;<a href="https://cran.r-project.org/web/packages/future/vignettes/future-1-overview.html">the <code>future</code> manual</a> or <a href="https://furrr.futureverse.org/">the <code>furrr</code> manual</a>. Function <code>futuremice</code> found its inspiration from Max’s useful suggestions on parallelization of <code>mice</code>’s chains on <a href="http://stackoverflow.com/questions/24040280/parallel-computation-of-multiple-imputation-by-using-mice-r-package"><code>stackoverflow</code></a>.</p>
 <hr>
 </section>
-<section id="time-gain-with-small-datasets" class="level3" data-number="9.0.2">
-<h3 data-number="9.0.2" class="anchored" data-anchor-id="time-gain-with-small-datasets"><span class="header-section-number">9.0.2</span> Time gain with small datasets</h3>
+<section id="time-gain-with-small-datasets" class="level3" data-number="8.0.2">
+<h3 data-number="8.0.2" class="anchored" data-anchor-id="time-gain-with-small-datasets"><span class="header-section-number">8.0.2</span> Time gain with small datasets</h3>
 <p>We demonstrate the potential gain in computing efficiency on simulated data. To this end we sample 1,000 cases from a multivariate normal distribution with mean vector</p>
 <p><span class="math display">\[
 \mu = \left[\begin{array}
@@ -404,8 +418,8 @@ pre { /* Code block - determines code spacing between lines */
 <p>It becomes apparent that for a small to moderate number of imputations, the conventional <code>mice</code> function is faster than the wrapper function <code>futuremice</code>. This is the case until the number of imputations <span class="math inline">\(m = 120\)</span>. For higher <span class="math inline">\(m\)</span>, wrapper function <code>futuremice</code> returns the imputations somewhat faster.</p>
 <hr>
 </section>
-<section id="time-gain-with-large-datasets" class="level3" data-number="9.0.3">
-<h3 data-number="9.0.3" class="anchored" data-anchor-id="time-gain-with-large-datasets"><span class="header-section-number">9.0.3</span> Time gain with large datasets</h3>
+<section id="time-gain-with-large-datasets" class="level3" data-number="8.0.3">
+<h3 data-number="8.0.3" class="anchored" data-anchor-id="time-gain-with-large-datasets"><span class="header-section-number">8.0.3</span> Time gain with large datasets</h3>
 <p>We replicated the above detailed simulation setup with a larger dataset of 10,000 cases and 8 variables. The mean and covariance structure follow the sampling scheme of the smaller data set. We show the results of this simulation in Figure 2.</p>
 <hr>
 <div class="cell">
@@ -439,8 +453,8 @@ pre { /* Code block - determines code spacing between lines */
 <p>There is not a large difference between using 2 and 3 cores with wrapper function <code>parlMICE</code>. For all number of imputations, the procedure runs faster with 3 cores, even though the imputations have to be divided over the cores. It might therefore be desirable to use always as many cores as possible, while leaving 1 core out to govern any overhead computing. For example, on a hexacore machine, use only 5 cores to run the <code>mice</code> algorithm in parallel with <code>futuremice</code>.</p>
 <hr>
 </section>
-<section id="default-settings" class="level3" data-number="9.0.4">
-<h3 data-number="9.0.4" class="anchored" data-anchor-id="default-settings"><span class="header-section-number">9.0.4</span> Default settings</h3>
+<section id="default-settings" class="level3" data-number="8.0.4">
+<h3 data-number="8.0.4" class="anchored" data-anchor-id="default-settings"><span class="header-section-number">8.0.4</span> Default settings</h3>
 <p>We will now discuss the arguments of function <code>futuremice</code>. Easy imputation of an incomplete dataset (say, <code>nhanes</code>) can be performed with <code>futuremice</code> in the following way.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">futuremice</span>(nhanes)</span>
@@ -584,8 +598,8 @@ ibind(x = imp, y = imps[[i]])</code></pre>
 <p>All other parts of the <code>mids</code> object are standard.</p>
 <hr>
 </section>
-<section id="using-mice-arguments" class="level3" data-number="9.0.5">
-<h3 data-number="9.0.5" class="anchored" data-anchor-id="using-mice-arguments"><span class="header-section-number">9.0.5</span> Using <code>mice</code> arguments</h3>
+<section id="using-mice-arguments" class="level3" data-number="8.0.5">
+<h3 data-number="8.0.5" class="anchored" data-anchor-id="using-mice-arguments"><span class="header-section-number">8.0.5</span> Using <code>mice</code> arguments</h3>
 <p>Function <code>futuremice</code> is able to deal with the conventional <code>mice</code> arguments. In order to change the imputation method from its default (predictive mean matching) to, for example, Bayesian linear regression, the <code>method</code> argument can be adjusted. For other possibilities with <code>mice</code>, we refer to the <code>mice</code> <a href="https://cran.r-project.org/web/packages/mice/mice.pdf">manual</a>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">futuremice</span>(nhanes, <span class="at">method =</span> <span class="st">"norm"</span>)</span>
@@ -598,8 +612,8 @@ ibind(x = imp, y = imps[[i]])</code></pre>
 <p>In <code>mice</code>, the number of imputations is specified with argument <code>m</code>. In <code>futuremice</code>, the same argument should be used, and <code>futuremice</code> takes care of dividing the imputations equally over the cores. The next section discusses these arguments.</p>
 <hr>
 </section>
-<section id="argument-n.core" class="level3" data-number="9.0.6">
-<h3 data-number="9.0.6" class="anchored" data-anchor-id="argument-n.core"><span class="header-section-number">9.0.6</span> Argument <code>n.core</code></h3>
+<section id="argument-n.core" class="level3" data-number="8.0.6">
+<h3 data-number="8.0.6" class="anchored" data-anchor-id="argument-n.core"><span class="header-section-number">8.0.6</span> Argument <code>n.core</code></h3>
 <p>With <code>n.core</code>, the number of cores (or CPUs) is given, and the number of imputations <code>m</code> is (about) equally distributed over the cores.</p>
 <p>As a default, <code>n.core</code> is specified as the number of available, logical cores minus 1. The default number of imputations has been set to <code>m = 5</code>, just as in a regular <code>mice</code> call. Hence, on machines with 4 available, logical cores, <span class="math inline">\(5\)</span> imputations are divided over 3 cores, leaving 1 core available for any overhead computations. This results in a number of imputations per core of: <span class="math inline">\(core1, core1, core2, core3, core3\)</span>, respectively.</p>
 <p>The computer with which this vignette is run, has</p>
@@ -616,8 +630,8 @@ ibind(x = imp, y = imps[[i]])</code></pre>
 </div>
 <hr>
 </section>
-<section id="argument-parallelseed" class="level3" data-number="9.0.7">
-<h3 data-number="9.0.7" class="anchored" data-anchor-id="argument-parallelseed"><span class="header-section-number">9.0.7</span> Argument <code>parallelseed</code></h3>
+<section id="argument-parallelseed" class="level3" data-number="8.0.7">
+<h3 data-number="8.0.7" class="anchored" data-anchor-id="argument-parallelseed"><span class="header-section-number">8.0.7</span> Argument <code>parallelseed</code></h3>
 <p>In simulation studies, it is often desired to set a seed to make the results reproducible. Similarly to <code>mice</code>, the seed value for <code>futuremice</code> can be defined outside the function. Under the hood, <code>futuremice</code> makes use of the <code>furrr::furrr_options(seed = TRUE)</code> argument, which recognizes that a seed has been specified in the global environment. Hence users can specify the following code to obtain identical results.</p>
 <div class="cell" data-warnings="false">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -707,23 +721,27 @@ Attaching package: 'magrittr'</code></pre>
 <p><strong>WARNING:</strong> Under unique circumstances, users might want to check whether imputations obtained under different streams are identical. This can be done by specifying the regular <code>seed</code> argument in the <code>futuremice</code> call. This seed is parsed to the separate <code>mice</code> calls within all futures, such that the results will be identical over the cores. If users specify the <code>seed</code> argument rather than the <code>parallelseed</code> argument, <code>futuremice</code> will ask if this is intended behavior if the user is in an <code>interactive()</code> session. Otherwise, a warning will be printed.</p>
 <hr>
 </section>
-<section id="systems-other-than-windows" class="level3" data-number="9.0.8">
-<h3 data-number="9.0.8" class="anchored" data-anchor-id="systems-other-than-windows"><span class="header-section-number">9.0.8</span> Systems other than Windows</h3>
+<section id="systems-other-than-windows" class="level3" data-number="8.0.8">
+<h3 data-number="8.0.8" class="anchored" data-anchor-id="systems-other-than-windows"><span class="header-section-number">8.0.8</span> Systems other than Windows</h3>
 <p>Function <code>futuremice</code> calls for function <code>future_map</code> with <code>plan("multisession")</code> from the <code>furrr</code> <a href="https://furrr.futureverse.org/">package</a>. Although other options are available, we have chosen for the <code>plan("multisession")</code> because it allows for the use of multiple cores on all computers, including a Windows computer. The user may adjust this by specifying the <code>future.plan</code> argument within <code>futuremice</code>. Other options are for example <code>future.plan = "multicore"</code>, which results in <code>plan("multicore")</code> (which is not supported on Windows computers), <code>future.plan = "cluster"</code>, resulting in <code>plan("cluster")</code>. For all options regarding <code>plan()</code>, check <code>?future::plan()</code>.</p>
 <hr>
 </section>
-<section id="references" class="level3" data-number="9.0.9">
-<h3 data-number="9.0.9" class="anchored" data-anchor-id="references"><span class="header-section-number">9.0.9</span> References</h3>
+<section id="references" class="level3" data-number="8.0.9">
+<h3 data-number="8.0.9" class="anchored" data-anchor-id="references"><span class="header-section-number">8.0.9</span> References</h3>
 <p>Manual <code>R</code>-package <code>future</code>, available at <a href="https://cran.r-project.org/web/packages/future/future.pdf">https://cran.r-project.org/web/packages/future/future.pdf</a></p>
 <p>Manual <code>R</code>-package <code>furrr</code>, available at <a href="https://cran.r-project.org/web/packages/furrr/furrr.pdf">https://cran.r-project.org/web/packages/furrr/furrr.pdf</a></p>
 <p>Manual package <code>MICE</code>, available at <a href="https://cran.r-project.org/web/packages/mice/mice.pdf">https://cran.r-project.org/web/packages/mice/mice.pdf</a></p>
 <p>Schouten, R.M., Lugtig, P.J. and Vink, G. (2016). Multiple amputation using ampute [manual]. Available at <a href="https://github.com/RianneSchouten/mice/blob/ampute/vignettes/Vignette_Ampute.pdf">https://github.com/RianneSchouten/mice/blob/ampute/vignettes/Vignette_Ampute.pdf</a></p>
 <p>Schouten, R.M. and Vink, G. (2017). parlmice: faster, paraleller, micer. <a href="https://www.gerkovink.com/parlMICE/Vignette_parlMICE.html">https://www.gerkovink.com/parlMICE/Vignette_parlMICE.html</a></p>
-<p>Van Buuren, S. and Groothuis-Oudshoorn, K. (2011). mice: Multivariate imputation by chained equations in R. <em>Journal of Statistical Software, 45 (3)</em>, 1-67.</p>
 <hr>
 <p><strong>End of Vignette</strong></p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-van2011mice" class="csl-entry" role="listitem">
+Van Buuren, Stef, and Karin Groothuis-Oudshoorn. 2011. <span>“Mice: Multivariate Imputation by Chained Equations in r.”</span> <em>Journal of Statistical Software</em> 45: 1–67.
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->
@@ -1112,12 +1130,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="../7Sensitivity/SenstivityAnalysis.html" class="pagination-link  aria-label=" &lt;span="" an="" approach="" to="" sensitivity="" analysis&lt;="" span&gt;"="">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title"><code>mice</code>: An approach to sensitivity analysis</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title"><code>mice</code>: An approach to sensitivity analysis</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../9Mpmm/mpmm_vignette.html" class="pagination-link" aria-label="<span class='chapter-number'>10</span>&nbsp; <span class='chapter-title'>Multivariate predictive mean matching</span>">
-        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Multivariate predictive mean matching</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../9Mpmm/mpmm_vignette.html" class="pagination-link" aria-label="<span class='chapter-number'>9</span>&nbsp; <span class='chapter-title'>Multivariate predictive mean matching</span>">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Multivariate predictive mean matching</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

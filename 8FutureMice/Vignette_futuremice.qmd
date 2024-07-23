@@ -61,7 +61,7 @@ require(purrr)
 require(dplyr)
 ```
 
-For big datasets or high number of imputations, performing multiple imputation with function `mice` from package `mice` (Van Buuren & Groothuis-Oudshoorn, 2011) might take a long time. As a solution, wrapper function `futuremice` was created to enable the imputation procedure to be run in parallel. This is done by dividing the imputations over multiple cores (or CPUs), thus potentially speeding up the process. The function `futuremice` is a sequel to `parlMICE` (Schouten & Vink, 2017), developed to improve user-friendliness. 
+For big datasets or high number of imputations, performing multiple imputation with function `mice` from package `mice` [@van2011mice] might take a long time. As a solution, wrapper function `futuremice` was created to enable the imputation procedure to be run in parallel. This is done by dividing the imputations over multiple cores (or CPUs), thus potentially speeding up the process. The function `futuremice` is a sequel to `parlMICE` (Schouten & Vink, 2017), developed to improve user-friendliness. 
 
 This vignette demonstrates two applications of the `futuremice` function. The first application shows the tradeoff between time and increasing number of imputations ($m$) for a small dataset; the second application does the same, but for a relatively large dataset. We also discuss `futuremice`'s arguments.
 
@@ -323,8 +323,6 @@ Manual package `MICE`, available at [https://cran.r-project.org/web/packages/mic
 Schouten, R.M., Lugtig, P.J. and Vink, G. (2016). Multiple amputation using ampute [manual]. Available at [https://github.com/RianneSchouten/mice/blob/ampute/vignettes/Vignette_Ampute.pdf](https://github.com/RianneSchouten/mice/blob/ampute/vignettes/Vignette_Ampute.pdf)
 
 Schouten, R.M. and Vink, G. (2017). parlmice: faster, paraleller, micer. [https://www.gerkovink.com/parlMICE/Vignette_parlMICE.html](https://www.gerkovink.com/parlMICE/Vignette_parlMICE.html)
-
-Van Buuren, S. and Groothuis-Oudshoorn, K. (2011). mice: Multivariate imputation by chained equations in R. *Journal of Statistical Software, 45 (3)*, 1-67. 
 
 ---
 

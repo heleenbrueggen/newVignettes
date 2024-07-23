@@ -9,7 +9,7 @@
 <meta name="author" content="Mice Development Team">
 <meta name="dcterms.date" content="2024-07-23">
 
-<title>newVignettesBook - 8&nbsp; mice: An approach to sensitivity analysis</title>
+<title>newVignettesBook - 7&nbsp; mice: An approach to sensitivity analysis</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -56,7 +56,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -146,7 +166,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../7Sensitivity/SenstivityAnalysis.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">`mice`: An approach to sensitivity analysis</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../7Sensitivity/SenstivityAnalysis.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">`mice`: An approach to sensitivity analysis</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -179,68 +199,62 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../1AdHoc/Adhoc_methods_and_mice.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Ad hoc methods and `mice`</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Ad hoc methods and `mice`</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../2ConvPool/Convergence_and_pooling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">`mice`: Algorithmic convergence and inference pooling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">`mice`: Algorithmic convergence and inference pooling</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../3Inspect/The_imputation_and_nonresponse_models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">`mice`: The imputation and nonresponse models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">`mice`: The imputation and nonresponse models</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../4PassivePostProcess/Passive_imputation_and_Post-processing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">`mice`: Passive imputation and Post-processing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">`mice`: Passive imputation and Post-processing</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../5CombInference/CombiningInferences.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">`mice`: Combining inferences</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">`mice`: Combining inferences</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../6MultiLevel/Imputing_multilevel_data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">`mice`: Imputing multi-level data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">`mice`: Imputing multi-level data</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../7Sensitivity/SenstivityAnalysis.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">`mice`: An approach to sensitivity analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">`mice`: An approach to sensitivity analysis</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../8FutureMice/Vignette_futuremice.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Wrapper function `futuremice`</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Wrapper function `futuremice`</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../9Mpmm/mpmm_vignette.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Multivariate predictive mean matching</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Multivariate predictive mean matching</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../10Synthetic/synthetic.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Synthetic data in `R`: Generating synthetic data with high utility using `mice`</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Synthetic data in `R`: Generating synthetic data with high utility using `mice`</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -262,7 +276,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title"><code>mice</code>: An approach to sensitivity analysis</span></h1>
+<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title"><code>mice</code>: An approach to sensitivity analysis</span></h1>
 <p class="subtitle lead"><strong>Vignette 7 of 10</strong></p>
 </div>
 
@@ -325,7 +339,7 @@ pre { /* Code block - determines code spacing between lines */
 <p>The focus of this document is on sensitivity analysis in the context of missing data. The goal of sensitivity analysis is to study the influence that violations of the missingness assumptions have on the obtained inference.</p>
 <hr>
 <p><strong>Data set</strong></p>
-<p>This is a synthetic dataset derived from 956 members of a very old (85+) cohort in Leiden. Unfortunately, we can not share the original leiden dataset with you. Thats why we have provided a synthetic version of leiden dataset. Multiple imputation of original leiden data set has been described in Boshuizen et al (1998), Van Buuren et al (1999) and Van Buuren (2012), chapter 7.</p>
+<p>This is a synthetic dataset derived from 956 members of a very old (85+) cohort in Leiden. Unfortunately, we can not share the original leiden dataset with you. Thats why we have provided a synthetic version of leiden dataset. Multiple imputation of original leiden data set has been described in Boshuizen et al (1998), Van Buuren et al (1999) and Van Buuren <span class="citation" data-cites="van2012flexible">(<a href="../references.html#ref-van2012flexible" role="doc-biblioref">2012</a>)</span>, chapter 7.</p>
 <p>The main question is how blood pressure affects mortality risk in the oldest old. We have reasons to mistrust the MAR assumption in this case. In particular, we worried whether the imputations of blood pressure under MAR would be low enough. The sensitivity analysis explores the effect of artificially lowering the imputed blood pressure by deducting an amount of δ from the values imputed under MAR. In order to preserve the relations between the variables, this needs to be done during the iterations.</p>
 <hr>
 <p><strong>1. Open <code>R</code> and load the packages <code>mice</code>, <code>lattice</code> and <code>survival</code>.</strong></p>
@@ -483,7 +497,7 @@ woon    1.0000000 0.00000000 1.0000000 0.0000000 0.09216643 0.3504184</code></pr
 </div>
 </div>
 </div>
-<p>In the next steps we are going to impute <code>rrsyst</code> and <code>rrdiast</code> under two scenarios: MAR and MNAR. We will use the delta adjustment technique described in paragraph 7.2.3 in Van Buuren (2012)</p>
+<p>In the next steps we are going to impute <code>rrsyst</code> and <code>rrdiast</code> under two scenarios: MAR and MNAR. We will use the delta adjustment technique described in paragraph 7.2.3 in Van Buuren <span class="citation" data-cites="van2012flexible">(<a href="../references.html#ref-van2012flexible" role="doc-biblioref">2012</a>)</span></p>
 <hr>
 <p><strong>6. Create a</strong> <span class="math inline">\(\delta\)</span> vector that represent the following adjustment values for mmHg: 0 for MAR, and -5, -10, -15, and -20 for MNAR.</p>
 <div class="cell">
@@ -590,7 +604,7 @@ woon    1.0000000 0.00000000 1.0000000 0.0000000 0.09216643 0.3504184</code></pr
 <span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coxph</span>(<span class="fu">Surv</span>(survda, dead) <span class="sc">~</span> <span class="fu">C</span>(sbpgp, <span class="fu">contr.treatment</span>(<span class="dv">6</span>, <span class="at">base =</span> <span class="dv">3</span>)) <span class="sc">+</span> <span class="fu">strata</span>(sexe, agegp))</span>
 <span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>See Van Buuren (2012, pp.186) for more information.</p>
+<p>See Van Buuren <span class="citation" data-cites="van2012flexible">(<a href="../references.html#ref-van2012flexible" role="doc-biblioref">2012, 186</a>)</span> for more information.</p>
 <hr>
 <p><strong>11. Create five fit objects that run the expression <code>cda</code> on the five imputed adjustment scenarios. Use function with().</strong></p>
 <div class="cell">
@@ -768,7 +782,7 @@ n= 956, number of events= 735 </code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(sws <span class="sc">~</span> <span class="fu">log10</span>(bw) <span class="sc">+</span> odi, <span class="at">data =</span> mammalsleep)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Sensitivity analysis is an important tool for investigating the plausibility of the MAR assumption. We again use the <span class="math inline">\(\delta\)</span>-adjustment technique described in Van Buuren (2012, p.&nbsp;185) as an informal, simple and direct method to create imputations under nonignorable models. We do so by simply adding and substracting some amount from the imputations.</p>
+<p>Sensitivity analysis is an important tool for investigating the plausibility of the MAR assumption. We again use the <span class="math inline">\(\delta\)</span>-adjustment technique described in Van Buuren <span class="citation" data-cites="van2012flexible">(<a href="../references.html#ref-van2012flexible" role="doc-biblioref">2012</a>)</span>, p.&nbsp;185] as an informal, simple and direct method to create imputations under nonignorable models. We do so by simply adding and substracting some amount from the imputations.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">8</span>, <span class="dv">6</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="sc">-</span><span class="dv">4</span>, <span class="sc">-</span><span class="dv">6</span>, <span class="sc">-</span><span class="dv">8</span>)</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>ini <span class="ot">&lt;-</span> <span class="fu">mice</span>(mammalsleep[, <span class="sc">-</span><span class="dv">1</span>], <span class="at">maxit=</span><span class="dv">0</span>, <span class="at">print=</span>F)</span>
@@ -811,18 +825,20 @@ n= 956, number of events= 735 </code></pre>
 </div>
 </div>
 <p>we find that even our smallest adjustment (<span class="math inline">\(\delta=|2|\)</span>) already makes up almost a quarter of the average <code>sws</code>. Choosing unreasonably large values may always influence your estimates. Therefore; choosing values that are reasonable given your suspicions of an assumed breach of the MAR assumption is vital.</p>
-<p>We only used a shift parameter here. In other applications, scale or shape parameters could be more natural (see e.g.&nbsp;Van Buuren (2012), Ch. 3.9.1). The calculations are easily adapted to such cases.</p>
+<p>We only used a shift parameter here. In other applications, scale or shape parameters could be more natural (see e.g.&nbsp;Van Buuren <span class="citation" data-cites="van2012flexible">(<a href="../references.html#ref-van2012flexible" role="doc-biblioref">2012</a>, Ch. 3.9.1)</span>). The calculations are easily adapted to such cases.</p>
 <hr>
 <p><strong>Conclusion</strong></p>
 <p>We have seen that we can create multiple imputations in multivariate missing data problems that imitate deviations from MAR. The analysis used the <code>post</code> argument of the <code>mice()</code> function as a hook to alter the imputations just after they have been created by a univariate imputation function. The diagnostics shows that the trick works. The relative mortality estimates are however robust to this type of alteration.</p>
-<hr>
-<p><strong>References</strong></p>
-<p>Van Buuren, S. (2012), Flexible Imputation of Missing Data. Chapman &amp; Hall/CRC, Boca Raton, FL. ISBN 9781439868249. <a href="https://www.crcpress.com/product/isbn/9781439868249">CRC Press</a>, <a href="http://www.amazon.com/Flexible-Imputation-Missing-Interdisciplinary-Statistics/dp/1439868247/ref=sr_1_1?ie=UTF8&amp;qid=1328972069&amp;sr=8-1">Amazon</a>.</p>
 <hr>
 <p><strong>- End of Vignette</strong></p>
 <hr>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-van2012flexible" class="csl-entry" role="listitem">
+Van Buuren, Stef. 2012. <em>Flexible Imputation of Missing Data</em>. CRC press.
+</div>
+</div>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -1210,12 +1226,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="../6MultiLevel/Imputing_multilevel_data.html" class="pagination-link  aria-label=" &lt;span="" imputing="" multi-level="" data&lt;="" span&gt;"="">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title"><code>mice</code>: Imputing multi-level data</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title"><code>mice</code>: Imputing multi-level data</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../8FutureMice/Vignette_futuremice.html" class="pagination-link" aria-label="<span class='chapter-number'>9</span>&nbsp; <span class='chapter-title'>Wrapper function `futuremice`</span>">
-        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Wrapper function <code>futuremice</code></span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../8FutureMice/Vignette_futuremice.html" class="pagination-link" aria-label="<span class='chapter-number'>8</span>&nbsp; <span class='chapter-title'>Wrapper function `futuremice`</span>">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Wrapper function <code>futuremice</code></span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
