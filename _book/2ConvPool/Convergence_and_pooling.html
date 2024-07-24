@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Mice Development Team">
-<meta name="dcterms.date" content="2024-07-23">
+<meta name="dcterms.date" content="2024-07-24">
 
 <title>newVignettesBook - 2&nbsp; mice: Algorithmic convergence and inference pooling</title>
 <style>
@@ -300,7 +300,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 23, 2024</p>
+      <p class="date">July 24, 2024</p>
     </div>
   </div>
   
@@ -343,17 +343,18 @@ pre { /* Code block - determines code spacing between lines */
 <hr>
 <p>This is the second vignette in a series of ten.</p>
 <p>The aim of this vignette is to enhance your understanding of multiple imputation, in general. You will learn how to pool the results of analyses performed on multiply-imputed data, how to approach different types of data and how to avoid the pitfalls researchers may fall into. The main objective is to increase your knowledge and understanding on applications of multiple imputation.</p>
-<p>No previous experience with <code>R</code> is required. Again, we start by loading (with <code>require()</code>) the necessary packages and fixing the random seed to allow for our outcomes to be replicable.</p>
+<p>No previous experience with <code>R</code> is required. Again, we start by loading the necessary packages and fixing the random seed to allow for our outcomes to be replicable.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(mice)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(lattice)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mice)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggmice)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <hr>
 <p><strong>1. Vary the number of imputations.</strong></p>
 <p>The number of imputed data sets can be specified by the <code>m = ...</code> argument. For example, to create just three imputed data sets, specify</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">print=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">print =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <hr>
 <p><strong>2. Change the predictor matrix</strong></p>
@@ -370,7 +371,7 @@ chl   1   1   1   0</code></pre>
 </div>
 <p>Each variable in the data has a row and a column in the potential predictor matrix. A value <code>1</code> indicates that the column variable can be used to impute the row variable. For example, the <code>1</code> at entry <code>[bmi, age]</code> indicates that variable <code>age</code> can be potentially used to impute the incomplete variable <code>bmi</code>. Note that the diagonal is zero because a variable is not allowed to impute itself. The row of <code>age</code> contains all one indicating that all remaining three variables (bmi, hyp, chl) can potentially be used to impute missing values in age variable. However, since there are no missing values in age, there will be no imputation. However, it is important to note that <code>mice</code> gives you complete control over the predictor matrix, enabling you to choose your own predictor relations. This can be very useful, for example, when you have many variables or when you have clear ideas or prior knowledge about relations in the data at hand. You can use <code>mice()</code> to give you the initial potential predictor matrix, and change it afterwards, without running the algorithm. This can be done by typing</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ini <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes, <span class="at">maxit=</span><span class="dv">0</span>, <span class="at">print=</span>F)</span>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ini <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes, <span class="at">maxit =</span> <span class="dv">0</span>, <span class="at">print =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> ini<span class="sc">$</span>pred</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>pred</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -393,14 +394,25 @@ hyp   1   1   0   1
 chl   1   1   0   0</code></pre>
 </div>
 </div>
+<p>The predictor matrix can be visualized with</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_pred</span>(pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Convergence_and_pooling_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 <p>Use your new predictor matrix in <code>mice()</code> as follows</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes, <span class="at">pred=</span>pred, <span class="at">print=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes, <span class="at">pred =</span> pred, <span class="at">print =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>There is a special function called <code>quickpred()</code> for a quick selection procedure of predictors, which can be handy for datasets containing many variables. See <code>?quickpred</code> for more info. Selecting predictors according to data relations with a minimum correlation of <span class="math inline">\(\rho=.30\)</span> can be done by</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ini <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes, <span class="at">pred=</span><span class="fu">quickpred</span>(nhanes, <span class="at">mincor=</span>.<span class="dv">3</span>), <span class="at">print=</span>F)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>ini<span class="sc">$</span>pred</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>ini <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes, <span class="at">pred =</span> <span class="fu">quickpred</span>(nhanes, <span class="at">mincor =</span> .<span class="dv">3</span>), <span class="at">print =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>ini<span class="sc">$</span>pred</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    age bmi hyp chl
 age   0   0   0   0
@@ -410,16 +422,27 @@ chl   1   1   1   0</code></pre>
 </div>
 </div>
 <p>For large predictor matrices, it can be useful to export them to Microsoft Excel for easier configuration (e.g.&nbsp;see the <code>xlsx</code> package for easy exporting and importing of Excel files).</p>
+<p>Visualizing the predictor matrix in <code>R</code> is done with</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_pred</span>(ini<span class="sc">$</span>pred, <span class="at">method =</span> ini<span class="sc">$</span>meth)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Convergence_and_pooling_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 <hr>
 <p><strong>3. Inspect the convergence of the algorithm</strong></p>
 <p>The <code>mice()</code> function implements an iterative Markov Chain Monte Carlo type of algorithm. Let us have a look at the trace lines generated by the algorithm to study convergence:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes, <span class="at">print=</span>F)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(imp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes, <span class="at">print =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_trace</span>(imp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Convergence_and_pooling_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Convergence_and_pooling_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -427,14 +450,14 @@ chl   1   1   1   0</code></pre>
 <p>The plot shows the mean (left) and standard deviation (right) of the imputed values only. In general, we would like the streams to intermingle and be free of any trends at the later iterations.</p>
 <p>The algorithm uses random sampling, and therefore, the results will be (perhaps slightly) different if we repeat the imputations with different seeds. In order to get exactly the same result, use the <code>seed</code> argument</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes, <span class="at">seed=</span><span class="dv">123</span>, <span class="at">print=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes, <span class="at">seed =</span> <span class="dv">123</span>, <span class="at">print =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>where <code>123</code> is some arbitrary number that you can choose yourself. Rerunning this command will always yields the same imputed values.</p>
 <hr>
 <p><strong>4. Change the imputation method</strong></p>
 <p>For each column, the algorithm requires a specification of the imputation method. To see which method was used by default:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>imp<span class="sc">$</span>meth</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>imp<span class="sc">$</span>meth</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  age   bmi   hyp   chl 
    "" "pmm" "pmm" "pmm" </code></pre>
@@ -442,7 +465,7 @@ chl   1   1   1   0</code></pre>
 </div>
 <p>The variable <code>age</code> is complete and therefore not imputed, denoted by the <code>""</code> empty string. The other variables have method <code>pmm</code>, which stands for <em>predictive mean matching</em>, the default in <code>mice</code> for numerical and integer data. In reality, the data are better described a as mix of numerical and categorical data. Let us take a look at the <code>nhanes2</code> data frame</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(nhanes2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(nhanes2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    age          bmi          hyp          chl       
  20-39:12   Min.   :20.40   no  :13   Min.   :113.0  
@@ -456,7 +479,7 @@ chl   1   1   1   0</code></pre>
 </div>
 <p>and the structure of the data frame</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(nhanes2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(nhanes2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>'data.frame':   25 obs. of  4 variables:
  $ age: Factor w/ 3 levels "20-39","40-59",..: 1 2 1 3 1 3 1 1 2 2 ...
@@ -467,8 +490,8 @@ chl   1   1   1   0</code></pre>
 </div>
 <p>Variable <code>age</code> consists of 3 age categories, while variable <code>hyp</code> is binary. The <code>mice()</code> function takes these properties automatically into account. Impute the <code>nhanes2</code> dataset</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes2, <span class="at">print=</span>F)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>imp<span class="sc">$</span>meth</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes2, <span class="at">print =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>imp<span class="sc">$</span>meth</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     age      bmi      hyp      chl 
       ""    "pmm" "logreg"    "pmm" </code></pre>
@@ -477,7 +500,7 @@ chl   1   1   1   0</code></pre>
 <p>Notice that <code>mice</code> has set the imputation method for variable <code>hyp</code> to <code>logreg</code>, which implements multiple imputation by <em>logistic regression</em>.</p>
 <p>An up-to-date overview of the methods in mice can be found by</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">methods</span>(mice)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">methods</span>(mice)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] mice.impute.2l.bin              mice.impute.2l.lmer            
  [3] mice.impute.2l.norm             mice.impute.2l.pan             
@@ -502,15 +525,15 @@ see '?methods' for accessing help and source code</code></pre>
 </div>
 <p>Let us change the imputation method for <code>bmi</code> to Bayesian normal linear regression imputation</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>ini <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes2, <span class="at">maxit =</span> <span class="dv">0</span>)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>meth <span class="ot">&lt;-</span> ini<span class="sc">$</span>meth</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>meth</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>ini <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes2, <span class="at">maxit =</span> <span class="dv">0</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>meth <span class="ot">&lt;-</span> ini<span class="sc">$</span>meth</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>meth</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     age      bmi      hyp      chl 
       ""    "pmm" "logreg"    "pmm" </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>meth[<span class="st">"bmi"</span>] <span class="ot">&lt;-</span> <span class="st">"norm"</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>meth</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>meth[<span class="st">"bmi"</span>] <span class="ot">&lt;-</span> <span class="st">"norm"</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>meth</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     age      bmi      hyp      chl 
       ""   "norm" "logreg"    "pmm" </code></pre>
@@ -518,38 +541,11 @@ see '?methods' for accessing help and source code</code></pre>
 </div>
 <p>and run the imputations again.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes2, <span class="at">meth =</span> meth, <span class="at">print=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes2, <span class="at">meth =</span> meth, <span class="at">print =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We may now again plot trace lines to study convergence</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(imp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Convergence_and_pooling_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<hr>
-<p><strong>5. Extend the number of iterations</strong></p>
-<p>Though using just five iterations (the default) often works well in practice, we need to extend the number of iterations of the <code>mice</code> algorithm to confirm that there is no trend and that the trace lines intermingle well. We can increase the number of iterations to 40 by running 35 additional iterations using the <code>mice.mids()</code> function.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>imp40 <span class="ot">&lt;-</span> <span class="fu">mice.mids</span>(imp, <span class="at">maxit=</span><span class="dv">35</span>, <span class="at">print=</span>F)</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(imp40)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Convergence_and_pooling_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<hr>
-<p><strong>6. Further diagnostic checking. Use function <code>stripplot()</code>.</strong></p>
-<p>Generally, one would prefer for the imputed data to be plausible values, i.e.&nbsp;values that could have been observed if they had not been missing. In order to form an idea about plausibility, one may check the imputations and compare them against the observed values. If we are willing to assume that the data are missing completely at random (MCAR), then the imputations should have the same distribution as the observed data. In general, distributions may be different because the missing data are MAR (or even MNAR). However, very large discrepancies need to be screened. Let us plot the observed and imputed data of <code>chl</code> by</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stripplot</span>(imp, chl<span class="sc">~</span>.imp, <span class="at">pch=</span><span class="dv">20</span>, <span class="at">cex=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_trace</span>(imp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -558,14 +554,82 @@ see '?methods' for accessing help and source code</code></pre>
 </div>
 </div>
 </div>
-<p>The convention is to plot observed data in blue and the imputed data in red. The figure graphs the data values of <code>chl</code> before and after imputation. Since the PMM method draws imputations from the observed data, imputed values have the same gaps as in the observed data, and are always within the range of the observed data. The figure indicates that the distributions of the imputed and the observed values are similar. The observed data have a particular feature that, for some reason, thedata cluster around the value of 187. The imputations reflect this feature, and are close to the data. Under MCAR, univariate distributions of the observed and imputed data are expected to be identical. Under MAR, they can be different, both in location and spread, but their multivariate distribution is assumed to be identical. There are many other ways to look at the imputed data.</p>
-<p>The following command creates a simpler version of the graph from the previous step and adds the plot for <code>bmi</code>.</p>
+<hr>
+<p><strong>5. Extend the number of iterations</strong></p>
+<p>Though using just five iterations (the default) often works well in practice, we need to extend the number of iterations of the <code>mice</code> algorithm to confirm that there is no trend and that the trace lines intermingle well. We can increase the number of iterations to 40 by running 35 additional iterations using the <code>mice.mids()</code> function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stripplot</span>(imp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>imp40 <span class="ot">&lt;-</span> <span class="fu">mice.mids</span>(imp, <span class="at">maxit =</span> <span class="dv">35</span>, <span class="at">print =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_trace</span>(imp40)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
 <p><img src="Convergence_and_pooling_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+<p><strong>6. Further diagnostic checking. Use function <code>ggmice()</code>.</strong></p>
+<p>Generally, one would prefer for the imputed data to be plausible values, i.e.&nbsp;values that could have been observed if they had not been missing. In order to form an idea about plausibility, one may check the imputations and compare them against the observed values. If we are willing to assume that the data are missing completely at random (MCAR), then the imputations should have the same distribution as the observed data. In general, distributions may be different because the missing data are MAR (or even MNAR). However, very large discrepancies need to be screened. Let us plot the observed and imputed data of <code>chl</code> by</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggmice</span>(imp, <span class="fu">aes</span>(.imp, chl)) <span class="sc">+</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.1</span>, <span class="at">height =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Convergence_and_pooling_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The convention is to plot observed data in blue and the imputed data in red. The figure graphs the observed data values of <code>chl</code> and the imputed values. Since the PMM method draws imputations from the observed data, imputed values have the same gaps as in the observed data, and are always within the range of the observed data. The figure indicates that the distributions of the imputed and the observed values are similar. The observed data have a particular feature that, for some reason, the data cluster around the value of 187. The imputations reflect this feature, and are close to the data. Under MCAR, univariate distributions of the observed and imputed data are expected to be identical. Under MAR, they can be different, both in location and spread, but their multivariate distribution is assumed to be identical. There are many other ways to look at the imputed data.</p>
+<p>The following command creates the graph from the previous step for each of the variables in the dataset.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>purrr<span class="sc">::</span><span class="fu">map</span>(<span class="fu">names</span>(imp<span class="sc">$</span>data), <span class="sc">~</span> {</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggmice</span>(imp, <span class="fu">aes</span>(<span class="at">x =</span> .imp, <span class="at">y =</span> .data[[.x]])) <span class="sc">+</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.1</span>, <span class="at">height =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Imputation number"</span>)</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Convergence_and_pooling_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+[[2]]</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Convergence_and_pooling_files/figure-html/unnamed-chunk-22-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+[[3]]</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Convergence_and_pooling_files/figure-html/unnamed-chunk-22-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+[[4]]</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Convergence_and_pooling_files/figure-html/unnamed-chunk-22-4.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -578,14 +642,14 @@ see '?methods' for accessing help and source code</code></pre>
 <p><strong>7. Perform the following regression analysis on the multiply imputed data. Store the solution in object <code>fit</code>.</strong></p>
 <p>[ = _0 + _1 + ]</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">with</span>(imp, <span class="fu">lm</span>(bmi <span class="sc">~</span> chl))</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">with</span>(imp, <span class="fu">lm</span>(bmi <span class="sc">~</span> chl))</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>call :
 with.mids(data = imp, expr = lm(bmi ~ chl))
 
 call1 :
-mice(data = nhanes2, method = meth, printFlag = F)
+mice(data = nhanes2, method = meth, printFlag = FALSE)
 
 nmis :
 age bmi hyp chl 
@@ -644,21 +708,21 @@ Coefficients:
 </div>
 <p>The <code>fit</code> object contains the regression summaries for each data set. The new object <code>fit</code> is actually of class <code>mira</code> (<em>multiply imputed repeated analyses</em>).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "mira"   "matrix"</code></pre>
 </div>
 </div>
 <p>Use the <code>ls()</code> function to what out what is in the object.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "analyses" "call"     "call1"    "nmis"    </code></pre>
 </div>
 </div>
 <p>Suppose we want to find the regression model fitted to the second imputed data set. It can be found as</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit<span class="sc">$</span>analyses[[<span class="dv">2</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit<span class="sc">$</span>analyses[[<span class="dv">2</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -684,8 +748,8 @@ F-statistic: 1.646 on 1 and 23 DF,  p-value: 0.2122</code></pre>
 <p><strong>8. Pool the analyses from object <code>fit</code>.</strong></p>
 <p>Pooling the repeated regression analyses can be done simply by typing</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>pool.fit <span class="ot">&lt;-</span> <span class="fu">pool</span>(fit)</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pool.fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>pool.fit <span class="ot">&lt;-</span> <span class="fu">pool</span>(fit)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pool.fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         term    estimate  std.error statistic       df   p.value
 1 (Intercept) 19.49906484 6.30846802  3.090935 6.469642 0.0193880
