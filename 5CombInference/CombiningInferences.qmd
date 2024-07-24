@@ -57,10 +57,11 @@ All the best,
 **1. Open `R` and load the following packages and fix the random seed.**
 
 ```{r message=FALSE, warning=FALSE}
-library(mice) # Data imputation
-library(dplyr) # Data manipulation
-library(magrittr) # Flexible piping in R
-library(purrr) # Flexible functional programming
+library(mice)     # Data imputation
+library(ggmice)   # Data visualization
+library(ggplot2)  # Data visualization
+library(dplyr)    # Data manipulation
+library(purrr)    # Flexible functional programming
 set.seed(123)
 ```
 
@@ -91,10 +92,15 @@ pred[c("hgt", "wgt"), "bmi"] <- 0
 pred
 ```
 
-and we run the `mice` algorithm again with the new predictor matrix (we still 'borrow' the imputation methods object `meth` from before)
+The predictor matrix can be visualized with
+```{r}
+plot_pred(pred, method = meth)
+```
+
+We run the `mice` algorithm again with the new predictor matrix (we still 'borrow' the imputation methods object `meth` from before)
 
 ```{r}
-imp <-mice(boys, 
+imp <- mice(boys, 
            meth = meth, 
            pred = pred, 
            print = FALSE, 
@@ -121,10 +127,10 @@ Quite often people are suggesting that using the average imputed dataset - so ta
 To demonstrate this, let's create the averaged data set and exclude the non-numerical columns:
 
 ```{r warning=FALSE}
-ave <- imp %>%
-  mice::complete("long") %>%
-  group_by(.id) %>%
-  summarise_all(.funs = mean) %>%
+ave <- imp |>
+  mice::complete("long") |>
+  group_by(.id) |>
+  summarise_all(.funs = mean)|>
   select(-.id, -.imp, -phb, -gen, -reg)
 
 head(ave)
@@ -133,8 +139,8 @@ head(ave)
 If we now calculate Pearson's correlation, rounded to two digits:
 
 ```{r}
-cor.wrong <- ave %>%
-  cor() %>%
+cor.wrong <- ave |>
+  cor() |>
   round(digits = 2)
 ```
 
@@ -156,10 +162,10 @@ fisher.backtrans <- function(x) (exp(2 * x) - 1) / (exp(2 * x) + 1)
 Now, to calculate the correlation on the imputed data
 
 ```{r}
-cor <- imp %>%
-  mice::complete("all") %>%
-  map(select, -phb, -gen, -reg) %>%  
-  map(stats::cor) %>%
+cor <- imp |>
+  mice::complete("all")|>
+  map(select, -phb, -gen, -reg) |>  
+  map(stats::cor) |>
   map(fisher.trans)
 cor
 ```
@@ -219,7 +225,7 @@ So, please stay away from averaging the imputed data sets. Instead, use the corr
 -   `lm(age ~ wgt + hgt)`
 
 ```{r}
-fit1.lm <- imp %>%
+fit1.lm <- imp |>
   with(lm(age ~ wgt + hgt))
 
 est1.lm <- pool(fit1.lm)
@@ -234,7 +240,7 @@ summary(est1.lm)
 -   `lm(age ~ wgt + hgt + I(hgt^2))`
 
 ```{r}
-fit2.lm <- imp %>%
+fit2.lm <- imp |>
   with(lm(age ~ wgt + hgt + I(hgt^2)))
 
 est2.lm <- pool(fit2.lm)
@@ -282,7 +288,7 @@ For large sample size, $D_3$ is equivalent to $D_1$, however, $D_3$ does not req
 
 ------------------------------------------------------------------------
 
-**7. Fit a stepwise linear model to predict `hgt` seperately to each of the imputed data sets.**
+**7. Fit a stepwise linear model to predict `hgt` separately to each of the imputed data sets.**
 
 We can use the `step()` function in `R` to select formula-based models. We start by specifying the scope of the evaluations:
 
@@ -332,10 +338,10 @@ D1(fit.gen, fit.nogen)
 With a p-value of `.059` we could conclude that `gen` is not strictly needed in this model. We might also investigate the BIC on the seperate imputed sets and compare those across (not within) models. We draw the same conclusion from this evaluation - the BIC is lower for the model without `gen` - although not by much. But then again, the p-value indicated the same trend.
 
 ```{r}
-BIC.gen <- fit.gen$analyses %>%
+BIC.gen <- fit.gen$analyses |>
   sapply(BIC) 
 
-BIC.nogen <- fit.nogen$analyses %>%
+BIC.nogen <- fit.nogen$analyses |>
   sapply(BIC)
 ```
 
@@ -360,10 +366,10 @@ Please not that we can compare the BIC only over the models, not over the impute
 To study the means for `bmi` conditionally on `reg` to get a picture of what the differences are:
 
 ```{r}
-imp %>%
-  mice::complete("long") %>%
-  select(reg, bmi) %>%
-  group_by(reg) %>%
+imp |>
+  mice::complete("long") |>
+  select(reg, bmi) |>
+  group_by(reg) |>
   summarise_all(.funs = mean)
 ```
 
@@ -378,10 +384,10 @@ se <- function(x){
 and then calculate the summary again
 
 ```{r}
-imp %>%
-  mice::complete("long") %>%
-  select(reg, bmi) %>%
-  group_by(reg) %>%
+imp |>
+  mice::complete("long") |>
+  select(reg, bmi) |>
+  group_by(reg) |>
   summarise_all(list(~ mean(.), ~se(.)))
 ```
 
@@ -396,16 +402,16 @@ imp %>%
 This is best done with an ANOVA. To do this correctly, we can apply the following workflow. First, we fit an intercept only model
 
 ```{r}
-fit.empty <- imp %>%
-  mice::complete("all") %>%
+fit.empty <- imp |>
+  mice::complete("all") |>
   map(lm, formula = bmi ~ 1)
 ```
 
 and then we fit the model with `reg` as a predictor
 
 ```{r}
-fit.reg <- imp %>%
-  mice::complete("all") %>%
+fit.reg <- imp |>
+  mice::complete("all") |>
   map(lm, formula = bmi ~ 1 + reg)
 ```
 
@@ -444,6 +450,6 @@ And find that indeed the overall (i.e. pooled) effect over the imputations is al
 
 ------------------------------------------------------------------------
 
-**- End of practical**
+**- End of vignette**
 
 ------------------------------------------------------------------------

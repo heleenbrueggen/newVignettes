@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Mice Development Team">
-<meta name="dcterms.date" content="2024-07-23">
+<meta name="dcterms.date" content="2024-07-24">
 
 <title>newVignettesBook - 5&nbsp; mice: Combining inferences</title>
 <style>
@@ -288,7 +288,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 23, 2024</p>
+      <p class="date">July 24, 2024</p>
     </div>
   </div>
   
@@ -336,11 +336,12 @@ pre { /* Code block - determines code spacing between lines */
 <hr>
 <p><strong>1. Open <code>R</code> and load the following packages and fix the random seed.</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mice) <span class="co"># Data imputation</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co"># Data manipulation</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr) <span class="co"># Flexible piping in R</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr) <span class="co"># Flexible functional programming</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mice)     <span class="co"># Data imputation</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggmice)   <span class="co"># Data visualization</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)  <span class="co"># Data visualization</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)    <span class="co"># Data manipulation</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)    <span class="co"># Flexible functional programming</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We choose seed value <code>123</code>. This is an arbitrary value; any value would be an equally good seed value. Fixing the random seed enables you (and others) to exactly replicate anything that involves random number generators. If you set the seed in your <code>R</code> instance to <code>123</code>, you will get the exact same results and plots as we present in this document if you follow the order and code of the exercises precisely.</p>
 <hr>
@@ -374,14 +375,25 @@ tv    1   1   1   1  1   1   1  0   1
 reg   1   1   1   1  1   1   1  1   0</code></pre>
 </div>
 </div>
-<p>and we run the <code>mice</code> algorithm again with the new predictor matrix (we still ‘borrow’ the imputation methods object <code>meth</code> from before)</p>
+<p>The predictor matrix can be visualized with</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span><span class="fu">mice</span>(boys, </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">meth =</span> meth, </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">pred =</span> pred, </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">print =</span> <span class="cn">FALSE</span>, </span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">m =</span> <span class="dv">10</span>, </span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">maxit =</span> <span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_pred</span>(pred, <span class="at">method =</span> meth)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="CombiningInferences_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We run the <code>mice</code> algorithm again with the new predictor matrix (we still ‘borrow’ the imputation methods object <code>meth</code> from before)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(boys, </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">meth =</span> meth, </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">pred =</span> pred, </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">print =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">m =</span> <span class="dv">10</span>, </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">maxit =</span> <span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We use the multiply imputed data set <code>imp</code> from now on.</p>
 <hr>
@@ -396,13 +408,13 @@ reg   1   1   1   1  1   1   1  1   0</code></pre>
 <p>Quite often people are suggesting that using the average imputed dataset - so taking the average over the imputed data set such that any realized cell depicts the average over the corresponding data in the imputed data - would be efficient and conform Rubin’s rules. This is not true. Doing this will yield false inference.</p>
 <p>To demonstrate this, let’s create the averaged data set and exclude the non-numerical columns:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ave <span class="ot">&lt;-</span> imp <span class="sc">%&gt;%</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  mice<span class="sc">::</span><span class="fu">complete</span>(<span class="st">"long"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(.id) <span class="sc">%&gt;%</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise_all</span>(<span class="at">.funs =</span> mean) <span class="sc">%&gt;%</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>.id, <span class="sc">-</span>.imp, <span class="sc">-</span>phb, <span class="sc">-</span>gen, <span class="sc">-</span>reg)</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ave)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>ave <span class="ot">&lt;-</span> imp <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  mice<span class="sc">::</span><span class="fu">complete</span>(<span class="st">"long"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(.id) <span class="sc">|&gt;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise_all</span>(<span class="at">.funs =</span> mean)<span class="sc">|&gt;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>.id, <span class="sc">-</span>.imp, <span class="sc">-</span>phb, <span class="sc">-</span>gen, <span class="sc">-</span>reg)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ave)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 6
     age   hgt   wgt   bmi    hc    tv
@@ -417,13 +429,13 @@ reg   1   1   1   1  1   1   1  1   0</code></pre>
 </div>
 <p>If we now calculate Pearson’s correlation, rounded to two digits:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>cor.wrong <span class="ot">&lt;-</span> ave <span class="sc">%&gt;%</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(<span class="at">digits =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>cor.wrong <span class="ot">&lt;-</span> ave <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>() <span class="sc">|&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(<span class="at">digits =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>we obtain:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>cor.wrong</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>cor.wrong</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     age  hgt  wgt  bmi   hc   tv
 age 1.00 0.98 0.95 0.63 0.86 0.86
@@ -439,17 +451,17 @@ tv  0.86 0.81 0.87 0.64 0.67 1.00</code></pre>
 </ul>
 <p>It is best to do a <a href="https://en.wikipedia.org/wiki/Fisher_transformation">Fisher transformation</a> before pooling the correlation estimates - and a backtransformation afterwards. Therefore we define the following two functions that allow us to transform and backtransform any value:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fisher.trans <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span> <span class="sc">*</span> <span class="fu">log</span>((<span class="dv">1</span> <span class="sc">+</span> x) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> x))</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>fisher.backtrans <span class="ot">&lt;-</span> <span class="cf">function</span>(x) (<span class="fu">exp</span>(<span class="dv">2</span> <span class="sc">*</span> x) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> (<span class="fu">exp</span>(<span class="dv">2</span> <span class="sc">*</span> x) <span class="sc">+</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>fisher.trans <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span> <span class="sc">*</span> <span class="fu">log</span>((<span class="dv">1</span> <span class="sc">+</span> x) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> x))</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>fisher.backtrans <span class="ot">&lt;-</span> <span class="cf">function</span>(x) (<span class="fu">exp</span>(<span class="dv">2</span> <span class="sc">*</span> x) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> (<span class="fu">exp</span>(<span class="dv">2</span> <span class="sc">*</span> x) <span class="sc">+</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now, to calculate the correlation on the imputed data</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>cor <span class="ot">&lt;-</span> imp <span class="sc">%&gt;%</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  mice<span class="sc">::</span><span class="fu">complete</span>(<span class="st">"all"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(select, <span class="sc">-</span>phb, <span class="sc">-</span>gen, <span class="sc">-</span>reg) <span class="sc">%&gt;%</span>  </span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(stats<span class="sc">::</span>cor) <span class="sc">%&gt;%</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(fisher.trans)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>cor</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>cor <span class="ot">&lt;-</span> imp <span class="sc">|&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  mice<span class="sc">::</span><span class="fu">complete</span>(<span class="st">"all"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(select, <span class="sc">-</span>phb, <span class="sc">-</span>gen, <span class="sc">-</span>reg) <span class="sc">|&gt;</span>  </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(stats<span class="sc">::</span>cor) <span class="sc">|&gt;</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(fisher.trans)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>cor</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$`1`
           age       hgt      wgt       bmi        hc        tv
@@ -544,12 +556,12 @@ tv  1.1855404 1.046846 1.214669 0.7124170 0.7733416       Inf</code></pre>
 </div>
 <p>The object <code>cor</code> is a list over the <span class="math inline">\(m\)</span> imputations where each listed index is a correlation <code>matrix</code>. To calculate the average over the correlation matrices, we can add the <span class="math inline">\(m\)</span> listed indices and divide them by <span class="math inline">\(m\)</span>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>cor.rect <span class="ot">&lt;-</span> <span class="fu">Reduce</span>(<span class="st">"+"</span>, cor) <span class="sc">/</span> <span class="fu">length</span>(cor) <span class="co"># m is equal to the length of the list</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>cor.rect <span class="ot">&lt;-</span> <span class="fu">fisher.backtrans</span>(cor.rect)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>cor.rect <span class="ot">&lt;-</span> <span class="fu">Reduce</span>(<span class="st">"+"</span>, cor) <span class="sc">/</span> <span class="fu">length</span>(cor) <span class="co"># m is equal to the length of the list</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>cor.rect <span class="ot">&lt;-</span> <span class="fu">fisher.backtrans</span>(cor.rect)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If we compare the wrong estimates in <code>cor.wrong</code></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>cor.wrong</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>cor.wrong</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     age  hgt  wgt  bmi   hc   tv
 age 1.00 0.98 0.95 0.63 0.86 0.86
@@ -562,7 +574,7 @@ tv  0.86 0.81 0.87 0.64 0.67 1.00</code></pre>
 </div>
 <p>with the correct estimates in <code>cor.rect</code></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(cor.rect, <span class="at">digits =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(cor.rect, <span class="at">digits =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     age  hgt  wgt  bmi   hc   tv
 age  NaN 0.98 0.95 0.63 0.86 0.82
@@ -576,8 +588,8 @@ tv  0.82 0.77 0.83 0.61 0.64  NaN</code></pre>
 <p>We see that the wrong estimates in <code>cor.wrong</code> have the tendency to overestimate the correlation coefficient that is correctly combined following Rubin’s rules.</p>
 <p>The correct estimates have a diagonal of <code>NaN</code>’s, because the tranformation of a correlation of <code>1</code> yields <code>Inf</code> and the backtransformation of <code>Inf</code> has no representation in real number space. We know the diagonal is supposed to be 1, so we can simply correct this</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(cor.rect) <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>cor.rect</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(cor.rect) <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>cor.rect</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          age       hgt       wgt       bmi        hc        tv
 age 1.0000000 0.9755309 0.9506921 0.6278711 0.8565901 0.8249429
@@ -610,11 +622,11 @@ tv  0.8249429 0.7711664 0.8287360 0.6110790 0.6436419 1.0000000</code></pre>
 <li><code>lm(age ~ wgt + hgt)</code></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>fit1.lm <span class="ot">&lt;-</span> imp <span class="sc">%&gt;%</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">with</span>(<span class="fu">lm</span>(age <span class="sc">~</span> wgt <span class="sc">+</span> hgt))</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>est1.lm <span class="ot">&lt;-</span> <span class="fu">pool</span>(fit1.lm)</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>est1.lm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>fit1.lm <span class="ot">&lt;-</span> imp <span class="sc">|&gt;</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">with</span>(<span class="fu">lm</span>(age <span class="sc">~</span> wgt <span class="sc">+</span> hgt))</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>est1.lm <span class="ot">&lt;-</span> <span class="fu">pool</span>(fit1.lm)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>est1.lm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Class: mipo    m = 10 
          term  m    estimate         ubar            b            t dfcom
@@ -626,7 +638,7 @@ tv  0.8249429 0.7711664 0.8287360 0.6110790 0.6436419 1.0000000</code></pre>
 2 737.9341 0.004907203 0.004883240 0.007569354
 3 739.5238 0.003630905 0.003617769 0.006301541</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(est1.lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(est1.lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         term    estimate   std.error statistic       df       p.value
 1 (Intercept) -7.47606562 0.242777710 -30.79387 741.8745 8.864898e-135
@@ -640,11 +652,11 @@ tv  0.8249429 0.7711664 0.8287360 0.6110790 0.6436419 1.0000000</code></pre>
 <li><code>lm(age ~ wgt + hgt + I(hgt^2))</code></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>fit2.lm <span class="ot">&lt;-</span> imp <span class="sc">%&gt;%</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">with</span>(<span class="fu">lm</span>(age <span class="sc">~</span> wgt <span class="sc">+</span> hgt <span class="sc">+</span> <span class="fu">I</span>(hgt<span class="sc">^</span><span class="dv">2</span>)))</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>est2.lm <span class="ot">&lt;-</span> <span class="fu">pool</span>(fit2.lm)</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>est2.lm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>fit2.lm <span class="ot">&lt;-</span> imp <span class="sc">|&gt;</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">with</span>(<span class="fu">lm</span>(age <span class="sc">~</span> wgt <span class="sc">+</span> hgt <span class="sc">+</span> <span class="fu">I</span>(hgt<span class="sc">^</span><span class="dv">2</span>)))</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>est2.lm <span class="ot">&lt;-</span> <span class="fu">pool</span>(fit2.lm)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>est2.lm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Class: mipo    m = 10 
          term  m      estimate         ubar            b            t dfcom
@@ -658,7 +670,7 @@ tv  0.8249429 0.7711664 0.8287360 0.6110790 0.6436419 1.0000000</code></pre>
 3 739.0178 0.003204824 0.003194586 0.005881329
 4 739.9209 0.002362658 0.002357089 0.005042820</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(est2.lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(est2.lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         term      estimate    std.error statistic       df      p.value
 1 (Intercept) -4.0568412458 4.984083e-01 -8.139594 740.3124 1.677234e-15
@@ -678,7 +690,7 @@ tv  0.8249429 0.7711664 0.8287360 0.6110790 0.6436419 1.0000000</code></pre>
 <li>The <a href="https://stefvanbuuren.name/fimd/sec-multiparameter.html"><span class="math inline">\(D_1\)</span> multivariate Wald test</a></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">D1</span>(fit2.lm, fit1.lm) <span class="co"># multivariate Wald test</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">D1</span>(fit2.lm, fit1.lm) <span class="co"># multivariate Wald test</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   test statistic df1      df2 dfcom     p.value         riv
  1 ~~ 2  60.30423   1 740.9791   744 2.70652e-14 0.002362658</code></pre>
@@ -689,7 +701,7 @@ tv  0.8249429 0.7711664 0.8287360 0.6110790 0.6436419 1.0000000</code></pre>
 <li>The <a href="https://stefvanbuuren.name/fimd/sec-multiparameter.html"><span class="math inline">\(D_2\)</span> Combining test statistic</a></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">D2</span>(fit2.lm, fit1.lm) <span class="co"># combining test statistics</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">D2</span>(fit2.lm, fit1.lm) <span class="co"># combining test statistics</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   test statistic df1      df2 dfcom      p.value         riv
  1 ~~ 2  60.24409   1 800930.6    NA 8.389226e-15 0.003363428</code></pre>
@@ -700,7 +712,7 @@ tv  0.8249429 0.7711664 0.8287360 0.6110790 0.6436419 1.0000000</code></pre>
 <li>The <a href="https://stefvanbuuren.name/fimd/sec-multiparameter.html"><span class="math inline">\(D_3\)</span> Likelihood ratio test</a></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">D3</span>(fit2.lm, fit1.lm) <span class="co"># likelihood ratio test</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">D3</span>(fit2.lm, fit1.lm) <span class="co"># likelihood ratio test</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   test statistic df1      df2 dfcom      p.value         riv
  1 ~~ 2   58.2858   1 494231.8   744 2.270773e-14 0.002481764</code></pre>
@@ -712,32 +724,32 @@ tv  0.8249429 0.7711664 0.8287360 0.6110790 0.6436419 1.0000000</code></pre>
 <section id="stepwise-modeling" class="level1" data-number="9">
 <h1 data-number="9"><span class="header-section-number">9</span> Stepwise modeling</h1>
 <hr>
-<p><strong>7. Fit a stepwise linear model to predict <code>hgt</code> seperately to each of the imputed data sets.</strong></p>
+<p><strong>7. Fit a stepwise linear model to predict <code>hgt</code> separately to each of the imputed data sets.</strong></p>
 <p>We can use the <code>step()</code> function in <code>R</code> to select formula-based models. We start by specifying the scope of the evaluations:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>scope <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">upper =</span> <span class="sc">~</span> age <span class="sc">+</span> wgt <span class="sc">+</span> hc <span class="sc">+</span> gen <span class="sc">+</span> phb <span class="sc">+</span> tv <span class="sc">+</span> reg,</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">lower =</span> <span class="sc">~</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>scope <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">upper =</span> <span class="sc">~</span> age <span class="sc">+</span> wgt <span class="sc">+</span> hc <span class="sc">+</span> gen <span class="sc">+</span> phb <span class="sc">+</span> tv <span class="sc">+</span> reg,</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">lower =</span> <span class="sc">~</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The scope specifies the upper bound of the model (all variable to run the selection on) and lower bound of the mode, where a <code>1</code> indicates an intercept only model.</p>
 <p>We can then specify the expressions to be evaluated:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>expr <span class="ot">&lt;-</span> <span class="fu">expression</span>(f1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(hgt <span class="sc">~</span> <span class="dv">1</span>),</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>                   f2 <span class="ot">&lt;-</span> <span class="fu">step</span>(f1, </span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">scope =</span> scope, </span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>                              <span class="at">direction =</span> <span class="st">"forward"</span>,</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>                              <span class="at">trace =</span> <span class="dv">0</span></span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>                              ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>expr <span class="ot">&lt;-</span> <span class="fu">expression</span>(f1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(hgt <span class="sc">~</span> <span class="dv">1</span>),</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>                   f2 <span class="ot">&lt;-</span> <span class="fu">step</span>(f1, </span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">scope =</span> scope, </span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>                              <span class="at">direction =</span> <span class="st">"forward"</span>,</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>                              <span class="at">trace =</span> <span class="dv">0</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>                              ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>where <code>f1</code> is the linear model to be evaluated and <code>f2</code> the <code>step()</code> function that evaluates the <code>f1</code> function. Finally, we apply the <code>with()</code> function to evaluate the expression <code>expr</code> on object <code>imp</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">with</span>(imp, expr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">with</span>(imp, expr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The <code>fit</code> object contains the model evaluations To calculate the times each variable was selected, we can run:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>formulas <span class="ot">&lt;-</span> <span class="fu">lapply</span>(fit<span class="sc">$</span>analyses, formula)</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>terms <span class="ot">&lt;-</span> <span class="fu">lapply</span>(formulas, terms)</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>votes <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">lapply</span>(terms, labels))</span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(votes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>formulas <span class="ot">&lt;-</span> <span class="fu">lapply</span>(fit<span class="sc">$</span>analyses, formula)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>terms <span class="ot">&lt;-</span> <span class="fu">lapply</span>(formulas, terms)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>votes <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">lapply</span>(terms, labels))</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(votes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>votes
 age gen  hc phb reg  tv wgt 
@@ -747,9 +759,9 @@ age gen  hc phb reg  tv wgt
 <p>We see that <code>reg</code> is only used in 1 models based on the 10 imputed datasets. <code>tv</code> is used in 7 of the models and <code>gen</code> is used in 2 of the 10 completed-data models. <code>wgt</code>, <code>hc</code>, <code>age</code> and <code>phb</code> are used in all models.</p>
 <p>To determine if <code>gen</code> should be a part of the final model, we may run a multivariate Wald test:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>fit.gen <span class="ot">&lt;-</span> <span class="fu">with</span>(imp, <span class="fu">lm</span>(hgt <span class="sc">~</span> age <span class="sc">+</span> hc <span class="sc">+</span> phb <span class="sc">+</span> wgt <span class="sc">+</span> gen))</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>fit.nogen <span class="ot">&lt;-</span> <span class="fu">with</span>(imp, <span class="fu">lm</span>(hgt <span class="sc">~</span> age <span class="sc">+</span> hc <span class="sc">+</span> phb <span class="sc">+</span> wgt))</span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="fu">D1</span>(fit.gen, fit.nogen)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>fit.gen <span class="ot">&lt;-</span> <span class="fu">with</span>(imp, <span class="fu">lm</span>(hgt <span class="sc">~</span> age <span class="sc">+</span> hc <span class="sc">+</span> phb <span class="sc">+</span> wgt <span class="sc">+</span> gen))</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>fit.nogen <span class="ot">&lt;-</span> <span class="fu">with</span>(imp, <span class="fu">lm</span>(hgt <span class="sc">~</span> age <span class="sc">+</span> hc <span class="sc">+</span> phb <span class="sc">+</span> wgt))</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="fu">D1</span>(fit.gen, fit.nogen)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   test statistic df1    df2 dfcom   p.value       riv
  1 ~~ 2 0.9319137   4 221.83   735 0.4461966 0.4369768</code></pre>
@@ -757,25 +769,25 @@ age gen  hc phb reg  tv wgt
 </div>
 <p>With a p-value of <code>.059</code> we could conclude that <code>gen</code> is not strictly needed in this model. We might also investigate the BIC on the seperate imputed sets and compare those across (not within) models. We draw the same conclusion from this evaluation - the BIC is lower for the model without <code>gen</code> - although not by much. But then again, the p-value indicated the same trend.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>BIC.gen <span class="ot">&lt;-</span> fit.gen<span class="sc">$</span>analyses <span class="sc">%&gt;%</span></span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sapply</span>(BIC) </span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>BIC.nogen <span class="ot">&lt;-</span> fit.nogen<span class="sc">$</span>analyses <span class="sc">%&gt;%</span></span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sapply</span>(BIC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>BIC.gen <span class="ot">&lt;-</span> fit.gen<span class="sc">$</span>analyses <span class="sc">|&gt;</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sapply</span>(BIC) </span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>BIC.nogen <span class="ot">&lt;-</span> fit.nogen<span class="sc">$</span>analyses <span class="sc">|&gt;</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sapply</span>(BIC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>To count the model evaluations in favor of <code>BIC.nogen</code> –&gt; better fit means lower BIC:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>BIC.gen</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>BIC.gen</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] 5086.363 5078.323 5078.325 5100.998 5094.769 5085.871 5084.575 5099.043
  [9] 5137.931 5125.774</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>BIC.nogen</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>BIC.nogen</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] 5065.019 5063.648 5058.033 5082.689 5079.410 5070.772 5065.247 5080.096
  [9] 5113.299 5101.303</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(BIC.gen <span class="sc">&gt;</span> BIC.nogen)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(BIC.gen <span class="sc">&gt;</span> BIC.nogen)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 10</code></pre>
 </div>
@@ -789,11 +801,11 @@ age gen  hc phb reg  tv wgt
 <p><strong>8. Calculate the average mean for <code>bmi</code> for every region <code>reg</code> over the imputed data.</strong></p>
 <p>To study the means for <code>bmi</code> conditionally on <code>reg</code> to get a picture of what the differences are:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>imp <span class="sc">%&gt;%</span></span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  mice<span class="sc">::</span><span class="fu">complete</span>(<span class="st">"long"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(reg, bmi) <span class="sc">%&gt;%</span></span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(reg) <span class="sc">%&gt;%</span></span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise_all</span>(<span class="at">.funs =</span> mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>imp <span class="sc">|&gt;</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  mice<span class="sc">::</span><span class="fu">complete</span>(<span class="st">"long"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(reg, bmi) <span class="sc">|&gt;</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(reg) <span class="sc">|&gt;</span></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise_all</span>(<span class="at">.funs =</span> mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 2
   reg     bmi
@@ -807,17 +819,17 @@ age gen  hc phb reg  tv wgt
 </div>
 <p>To also obtain information about the standard error of the mean, we could extend the <code>summarise_all()</code> evaluation wit a custom standard error function:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sd</span>(x) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="fu">length</span>(x))</span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sd</span>(x) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="fu">length</span>(x))</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>and then calculate the summary again</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>imp <span class="sc">%&gt;%</span></span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  mice<span class="sc">::</span><span class="fu">complete</span>(<span class="st">"long"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(reg, bmi) <span class="sc">%&gt;%</span></span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(reg) <span class="sc">%&gt;%</span></span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise_all</span>(<span class="fu">list</span>(<span class="sc">~</span> <span class="fu">mean</span>(.), <span class="sc">~</span><span class="fu">se</span>(.)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>imp <span class="sc">|&gt;</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>  mice<span class="sc">::</span><span class="fu">complete</span>(<span class="st">"long"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(reg, bmi) <span class="sc">|&gt;</span></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(reg) <span class="sc">|&gt;</span></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise_all</span>(<span class="fu">list</span>(<span class="sc">~</span> <span class="fu">mean</span>(.), <span class="sc">~</span><span class="fu">se</span>(.)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 3
   reg    mean     se
@@ -837,24 +849,24 @@ age gen  hc phb reg  tv wgt
 <p><strong>9. Test whether the means differ.</strong></p>
 <p>This is best done with an ANOVA. To do this correctly, we can apply the following workflow. First, we fit an intercept only model</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>fit.empty <span class="ot">&lt;-</span> imp <span class="sc">%&gt;%</span></span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  mice<span class="sc">::</span><span class="fu">complete</span>(<span class="st">"all"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(lm, <span class="at">formula =</span> bmi <span class="sc">~</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>fit.empty <span class="ot">&lt;-</span> imp <span class="sc">|&gt;</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  mice<span class="sc">::</span><span class="fu">complete</span>(<span class="st">"all"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(lm, <span class="at">formula =</span> bmi <span class="sc">~</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>and then we fit the model with <code>reg</code> as a predictor</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>fit.reg <span class="ot">&lt;-</span> imp <span class="sc">%&gt;%</span></span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  mice<span class="sc">::</span><span class="fu">complete</span>(<span class="st">"all"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(lm, <span class="at">formula =</span> bmi <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> reg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>fit.reg <span class="ot">&lt;-</span> imp <span class="sc">|&gt;</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  mice<span class="sc">::</span><span class="fu">complete</span>(<span class="st">"all"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(lm, <span class="at">formula =</span> bmi <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> reg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can calculate the separate ANOVA’s from each fitted model:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>aov.empty <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">with</span>(imp, <span class="fu">lm</span>(age <span class="sc">~</span> <span class="dv">1</span>))<span class="sc">$</span>analyses, aov)</span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>aov.reg <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">with</span>(imp, <span class="fu">lm</span>(age <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> reg))<span class="sc">$</span>analyses, aov)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>aov.empty <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">with</span>(imp, <span class="fu">lm</span>(age <span class="sc">~</span> <span class="dv">1</span>))<span class="sc">$</span>analyses, aov)</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>aov.reg <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">with</span>(imp, <span class="fu">lm</span>(age <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> reg))<span class="sc">$</span>analyses, aov)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>And look at the summaries:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(aov.empty, summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(aov.empty, summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
              Df Sum Sq Mean Sq F value Pr(&gt;F)
@@ -901,7 +913,7 @@ Residuals   747  35503   47.53               </code></pre>
 <p><span class="math display">\[F = \frac{\text{Model MS}}{\text{Residual MS}}\]</span></p>
 <p>We do have those components for the model with <code>reg</code> included as predictor:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(aov.reg, summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(aov.reg, summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
              Df Sum Sq Mean Sq F value  Pr(&gt;F)   
@@ -977,7 +989,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>We find that each of the separate ANOVA’s indicates significance, meaning that there is an overall effect for <code>reg</code> on <code>bmi</code> in each imputed data set.</p>
 <p>To obtain an overall estimate for the ANOVA we can simply compare the empty model to the model with <code>reg</code> included:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">D1</span>(fit.reg, fit.empty)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">D1</span>(fit.reg, fit.empty)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   test statistic df1      df2 dfcom    p.value         riv
  1 ~~ 2  4.604686   4 739.1867   743 0.00111894 0.009690917</code></pre>
@@ -985,7 +997,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 <p>And find that indeed the overall (i.e.&nbsp;pooled) effect over the imputations is also significant, which is not surprising as the F-values for the separate tests show little variation.</p>
 <hr>
-<p><strong>- End of practical</strong></p>
+<p><strong>- End of vignette</strong></p>
 <hr>
 
 
