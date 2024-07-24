@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Mice Development Team">
-<meta name="dcterms.date" content="2024-07-23">
+<meta name="dcterms.date" content="2024-07-24">
 <meta name="description" content="Vignette 1 of 10">
 
 <title>newVignettesBook - 1&nbsp; Ad hoc methods and mice</title>
@@ -295,7 +295,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 23, 2024</p>
+      <p class="date">July 24, 2024</p>
     </div>
   </div>
   
@@ -343,11 +343,12 @@ pre { /* Code block - determines code spacing between lines */
 <section id="working-with-mice" class="level4" data-number="1.0.0.1">
 <h4 data-number="1.0.0.1" class="anchored" data-anchor-id="working-with-mice"><span class="header-section-number">1.0.0.1</span> Working with mice</h4>
 <hr>
-<p><strong>1. Open <code>R</code> and load the packages <code>mice</code> and <code>lattice</code></strong></p>
+<p><strong>1. Open <code>R</code> and load the packages <code>mice</code>, <code>ggmice</code>, and <code>ggplot2</code></strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(mice)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(lattice)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mice)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggmice)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If <code>mice</code> is not yet installed, run:</p>
 <div class="cell">
@@ -412,22 +413,13 @@ pre { /* Code block - determines code spacing between lines */
 <p><strong>4. Inspect the missing data pattern</strong></p>
 <p>Check the missingness pattern for the <code>nhanes</code> dataset</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">md.pattern</span>(nhanes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_pattern</span>(nhanes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
 <p><img src="Adhoc_methods_and_mice_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   age hyp bmi chl   
-13   1   1   1   1  0
-3    1   1   1   0  1
-1    1   1   0   1  1
-1    1   0   0   1  2
-7    1   0   0   0  3
-     0   8   9  10 27</code></pre>
 </div>
 </div>
 <p>The missingness pattern shows that there are 27 missing values in total: 10 for <code>chl</code> , 9 for <code>bmi</code> and 8 for <code>hyp</code>. Moreover, there are thirteen completely observed rows, four rows with 1 missing, one row with 2 missings and seven rows with 3 missings. Looking at the missing data pattern is always useful (but may be difficult for datasets with many variables). It can give you an indication on how much information is missing and how the missingness is distributed.</p>
@@ -437,8 +429,8 @@ pre { /* Code block - determines code spacing between lines */
 <hr>
 <p><strong>5. Form a regression model where <code>age</code> is predicted from <code>bmi</code>. </strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">with</span>(nhanes, <span class="fu">lm</span>(age <span class="sc">~</span> bmi))</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">with</span>(nhanes, <span class="fu">lm</span>(age <span class="sc">~</span> bmi))</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -464,7 +456,7 @@ F-statistic: 2.246 on 1 and 14 DF,  p-value: 0.1561</code></pre>
 <hr>
 <p><strong>6. Impute the missing data in the <code>nhanes</code> dataset with mean imputation. </strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes, <span class="at">method =</span> <span class="st">"mean"</span>, <span class="at">m =</span> <span class="dv">1</span>, <span class="at">maxit =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes, <span class="at">method =</span> <span class="st">"mean"</span>, <span class="at">m =</span> <span class="dv">1</span>, <span class="at">maxit =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
  iter imp variable
@@ -475,7 +467,7 @@ F-statistic: 2.246 on 1 and 14 DF,  p-value: 0.1561</code></pre>
 <hr>
 <p><strong>7. Explore the imputed data with the <code>complete()</code> function. What do you think the variable means are? What happened to the regression equation after imputation?</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">complete</span>(imp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">complete</span>(imp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   age     bmi      hyp   chl
 1    1 26.5625 1.235294 191.4
@@ -507,7 +499,7 @@ F-statistic: 2.246 on 1 and 14 DF,  p-value: 0.1561</code></pre>
 </div>
 <p>We see the repetitive numbers <code>26.5625</code> for <code>bmi</code>, <code>1.2352594</code> for <code>hyp</code>, and <code>191.4</code> for <code>chl</code>. These can be confirmed as the means of the respective variables (columns):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colMeans</span>(nhanes, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colMeans</span>(nhanes, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       age        bmi        hyp        chl 
   1.760000  26.562500   1.235294 191.400000 </code></pre>
@@ -516,8 +508,8 @@ F-statistic: 2.246 on 1 and 14 DF,  p-value: 0.1561</code></pre>
 <p>We saw during the inspection of the missing data pattern that variable <code>age</code> has no missings. Therefore nothing is imputed for <code>age</code> because we would not want to alter the observed (and bonafide) values.</p>
 <p>To inspect the regression model with the imputed data, run:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">with</span>(imp, <span class="fu">lm</span>(age <span class="sc">~</span> bmi))</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">with</span>(imp, <span class="fu">lm</span>(age <span class="sc">~</span> bmi))</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 7
   term        estimate std.error statistic p.value  nobs df.residual
@@ -527,8 +519,17 @@ F-statistic: 2.246 on 1 and 14 DF,  p-value: 0.1561</code></pre>
 </div>
 </div>
 <p>It is clear that nothing changed, but then again this is not surprising as variable <code>bmi</code> is somewhat normally distributed and we are just adding weight to the mean.</p>
+<p>The imputed data can be inspected visually by comparing the distribution of the observed data to the distribution of the imputed data:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">densityplot</span>(nhanes<span class="sc">$</span>bmi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggmice</span>(nhanes, <span class="fu">aes</span>(bmi)) <span class="sc">+</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_histogram</span>(<span class="at">fill =</span> <span class="st">"white"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 9 rows containing non-finite outside the scale range
+(`stat_bin()`).</code></pre>
+</div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -536,11 +537,24 @@ F-statistic: 2.246 on 1 and 14 DF,  p-value: 0.1561</code></pre>
 </figure>
 </div>
 </div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggmice</span>(imp, <span class="fu">aes</span>(bmi)) <span class="sc">+</span> </span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_histogram</span>(<span class="at">fill =</span> <span class="st">"white"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 </div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Adhoc_methods_and_mice_files/figure-html/unnamed-chunk-12-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Every missing instance of <code>bmi</code> is filled in with the average observed <code>bmi</code> value.</p>
 <hr>
 <p><strong>8. Impute the missing data in the <code>nhanes</code> dataset with regression imputation. </strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes, <span class="at">method =</span> <span class="st">"norm.predict"</span>, <span class="at">m =</span> <span class="dv">1</span>, <span class="at">maxit =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes, <span class="at">method =</span> <span class="st">"norm.predict"</span>, <span class="at">m =</span> <span class="dv">1</span>, <span class="at">maxit =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
  iter imp variable
@@ -551,7 +565,7 @@ F-statistic: 2.246 on 1 and 14 DF,  p-value: 0.1561</code></pre>
 <hr>
 <p><strong>9. Again, inspect the completed data and investigate the imputed data regression model. </strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">complete</span>(imp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">complete</span>(imp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   age      bmi       hyp      chl
 1    1 28.36021 1.0474831 172.4557
@@ -584,8 +598,8 @@ F-statistic: 2.246 on 1 and 14 DF,  p-value: 0.1561</code></pre>
 <p>The repetitive numbering is gone. We have now obtained a more natural looking set of imputations: instead of filling in the same <code>bmi</code> for all ages, we now take <code>age</code> (as well as <code>hyp</code> and <code>chl</code>) into account when imputing <code>bmi</code>.</p>
 <p>To inspect the regression model with the imputed data, run:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">with</span>(imp, <span class="fu">lm</span>(age <span class="sc">~</span> bmi))</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">with</span>(imp, <span class="fu">lm</span>(age <span class="sc">~</span> bmi))</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 7
   term        estimate std.error statistic  p.value  nobs df.residual
@@ -595,10 +609,26 @@ F-statistic: 2.246 on 1 and 14 DF,  p-value: 0.1561</code></pre>
 </div>
 </div>
 <p>It is clear that something has changed. In fact, we extrapolated (part of) the regression model for the observed data to missing data in <code>bmi</code>. In other words; the relation (read: information) gets stronger and we’ve obtained more observations.</p>
+<p>The imputed data can be inspected visually with:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggmice</span>(imp, <span class="fu">aes</span>(bmi)) <span class="sc">+</span> </span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">fill =</span> <span class="st">"white"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Adhoc_methods_and_mice_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The imputed values fall within the range of observed <code>bmi</code> values.</p>
 <hr>
 <p><strong>10. Impute the missing data in the <code>nhanes</code> dataset with stochastic regression imputation.</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes, <span class="at">method =</span> <span class="st">"norm.nob"</span>, <span class="at">m =</span> <span class="dv">1</span>, <span class="at">maxit =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes, <span class="at">method =</span> <span class="st">"norm.nob"</span>, <span class="at">m =</span> <span class="dv">1</span>, <span class="at">maxit =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
  iter imp variable
@@ -609,7 +639,7 @@ F-statistic: 2.246 on 1 and 14 DF,  p-value: 0.1561</code></pre>
 <hr>
 <p><strong>11. Again, inspect the completed data and investigate the imputed data regression model. </strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">complete</span>(imp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">complete</span>(imp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   age      bmi       hyp      chl
 1    1 33.61471 1.0064774 200.0025
@@ -642,8 +672,8 @@ F-statistic: 2.246 on 1 and 14 DF,  p-value: 0.1561</code></pre>
 <p>We have once more obtained a more natural looking set of imputations, where instead of filling in the same <code>bmi</code> for all ages, we now take <code>age</code> (as well as <code>hyp</code> and <code>chl</code>) into account when imputing <code>bmi</code>. We also add a random error to allow for our imputations to be off the regression line.</p>
 <p>To inspect the regression model with the imputed data, run:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">with</span>(imp, <span class="fu">lm</span>(age <span class="sc">~</span> bmi))</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">with</span>(imp, <span class="fu">lm</span>(age <span class="sc">~</span> bmi))</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 7
   term        estimate std.error statistic   p.value  nobs df.residual
@@ -652,6 +682,22 @@ F-statistic: 2.246 on 1 and 14 DF,  p-value: 0.1561</code></pre>
 2 bmi          -0.0793    0.0300     -2.64 0.0145       25          23</code></pre>
 </div>
 </div>
+<p>The imputed data can be inspected visually with:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggmice</span>(imp, <span class="fu">aes</span>(bmi)) <span class="sc">+</span> </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">fill =</span> <span class="st">"white"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Adhoc_methods_and_mice_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This imputation method better reflects the uncertainty in the imputed data than previous methods.</p>
 <hr>
 <p><strong>12. Re-run the stochastic imputation model with seed <code>123</code> and verify if your results are the same as the ones below</strong></p>
 <div class="cell">
@@ -665,9 +711,9 @@ F-statistic: 2.246 on 1 and 14 DF,  p-value: 0.1561</code></pre>
 </div>
 <p>The imputation procedure uses random sampling, and therefore, the results will be (perhaps slightly) different if we repeat the imputations. In order to get exactly the same result, you can use the seed argument</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes, <span class="at">method =</span> <span class="st">"norm.nob"</span>, <span class="at">m =</span> <span class="dv">1</span>, <span class="at">maxit =</span> <span class="dv">1</span>, <span class="at">seed =</span> <span class="dv">123</span>)</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">with</span>(imp, <span class="fu">lm</span>(age <span class="sc">~</span> bmi))</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes, <span class="at">method =</span> <span class="st">"norm.nob"</span>, <span class="at">m =</span> <span class="dv">1</span>, <span class="at">maxit =</span> <span class="dv">1</span>, <span class="at">seed =</span> <span class="dv">123</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">with</span>(imp, <span class="fu">lm</span>(age <span class="sc">~</span> bmi))</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>where 123 is some arbitrary number that you can choose yourself. Re-running this command will always yields the same imputed values. The ability to replicate one’s findings exactly is considered essential in today’s reproducible science.</p>
 <hr>
@@ -678,7 +724,7 @@ F-statistic: 2.246 on 1 and 14 DF,  p-value: 0.1561</code></pre>
 <hr>
 <p><strong>13. Let us impute the missing data in the <code>nhanes</code> dataset</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(nhanes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
  iter imp variable
@@ -708,7 +754,7 @@ F-statistic: 2.246 on 1 and 14 DF,  p-value: 0.1561</code></pre>
   5   4  bmi  hyp  chl
   5   5  bmi  hyp  chl</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>imp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>imp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Class: mids
 Number of multiple imputations:  5 
@@ -727,7 +773,7 @@ chl   1   1   1   0</code></pre>
 <p>The object <code>imp</code> contains a multiply imputed data set (of class <code>mids</code>). It encapsulates all information from imputing the <code>nhanes</code> dataset, such as the original data, the imputed values, the number of missing values, number of iterations, and so on.</p>
 <p>To obtain an overview of the information stored in the object <code>imp</code>, use the <code>attributes()</code> function:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(imp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(imp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$names
  [1] "data"            "imp"             "m"               "where"          
@@ -743,7 +789,7 @@ $class
 </div>
 <p>For example, the original data are stored as</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>imp<span class="sc">$</span>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>imp<span class="sc">$</span>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   age  bmi hyp chl
 1    1   NA  NA  NA
@@ -775,7 +821,7 @@ $class
 </div>
 <p>and the imputations are stored as</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>imp<span class="sc">$</span>imp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>imp<span class="sc">$</span>imp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$age
 [1] 1 2 3 4 5
@@ -822,8 +868,8 @@ $chl
 <p><strong>14. Extract the completed data</strong></p>
 <p>By default, <code>mice()</code> calculates five (<em>m</em> = 5) imputed data sets. In order to get the third imputed data set, use the <code>complete()</code> function</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>c3 <span class="ot">&lt;-</span> <span class="fu">complete</span>(imp, <span class="dv">3</span>) </span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">md.pattern</span>(c3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>c3 <span class="ot">&lt;-</span> <span class="fu">complete</span>(imp, <span class="dv">3</span>) </span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_pattern</span>(c3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> /\     /\
 {  `---'  }
@@ -835,20 +881,15 @@ $chl
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Adhoc_methods_and_mice_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Adhoc_methods_and_mice_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   age bmi hyp chl  
-25   1   1   1   1 0
-     0   0   0   0 0</code></pre>
 </div>
 </div>
 <p>The collection of the <span class="math inline">\(m\)</span> imputed data sets can be exported by function <code>complete()</code> in long, broad and repeated formats. For example,</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>c.long <span class="ot">&lt;-</span> <span class="fu">complete</span>(imp, <span class="st">"long"</span>)  </span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>c.long</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>c.long <span class="ot">&lt;-</span> <span class="fu">complete</span>(imp, <span class="st">"long"</span>)  </span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>c.long</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    age  bmi hyp chl .imp .id
 1     1 24.9   1 187    1   1
@@ -980,7 +1021,7 @@ $chl
 </div>
 <p>and</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>c.broad <span class="ot">&lt;-</span> <span class="fu">complete</span>(imp, <span class="st">"broad"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>c.broad <span class="ot">&lt;-</span> <span class="fu">complete</span>(imp, <span class="st">"broad"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>New names:
 • `age` -&gt; `age...1`
@@ -1004,7 +1045,7 @@ $chl
 • `hyp` -&gt; `hyp...19`
 • `chl` -&gt; `chl...20`</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>c.broad</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>c.broad</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   age.1 bmi.1 hyp.1 chl.1 age.2 bmi.2 hyp.2 chl.2 age.3 bmi.3 hyp.3 chl.3
 1      1  24.9     1   187     1  25.5     1   238     1  27.4     1   187
