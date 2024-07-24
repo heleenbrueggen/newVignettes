@@ -45,11 +45,12 @@ In this vignette we will focus on analyzing the relation between the data and th
 
 ------------------------------------------------------------------------
 
-**1. Open `R` and load the packages `mice` and `lattice`. Also, fix the random seed.**
+**1. Open `R` and load the packages `mice`, `ggmice` and `ggplot2`. Also, fix the random seed.**
 
 ```{r warning=FALSE, message=FALSE}
-require(mice)
-require(lattice)
+library(mice)
+library(ggmice)
+library(ggplot2)
 set.seed(123)
 ```
 
@@ -78,10 +79,10 @@ summary(boys)
 
 ------------------------------------------------------------------------
 
-**4. As we have seen before, the function `md.pattern()` can be used to display all different missing data patterns. How many different missing data patterns are present in the boys dataframe and which pattern occurs most frequently in the data?**
+**4. As we have seen before, the function `plot_pattern()` can be used to display all different missing data patterns. How many different missing data patterns are present in the boys dataframe and which pattern occurs most frequently in the data?**
 
 ```{r}
-md.pattern(boys)
+plot_pattern(boys)
 ```
 
 There are 13 patterns in total, with the pattern where `gen`, `phb` and `tv` are missing occurring the most.
@@ -91,8 +92,8 @@ There are 13 patterns in total, with the pattern where `gen`, `phb` and `tv` are
 **5. How many patterns occur for which the variable `gen` (genital Tannerstage) is missing?**
 
 ```{r}
-mpat <- md.pattern(boys)
-sum(mpat[, "gen"] == 0)
+mpat <- plot_pattern(boys)
+sum(mpat$data$x == "gen" & mpat$data$.where == "missing")
 ```
 
 Answer: 8 patterns (503 cases)
@@ -110,22 +111,30 @@ R
 
 As we can see, the missingness indicator tells us for each value in `gen` whether it is missing (`TRUE`) or observed (`FALSE`).
 
-A histogram can be made with the function `histogram()`.
+A histogram can be made with the function `ggmice`.
 
 ```{r}
-histogram(boys$gen)
+ggmice(boys, aes(age)) + 
+  geom_histogram(fill = "white")
 ```
 
-or, equivalently, one could use
+The code for a conditional histogram of `age` given `R` is
 
 ```{r}
-histogram(~ gen, data = boys)
+ggmice(boys, aes(age)) + 
+  geom_histogram(fill = "white") +
+  facet_wrap(~is.na(gen))
 ```
 
-Writing the latter line of code for plots is more efficient than selecting every part of the `boys` data with the `boys$...` command, especially if plots become more advanced. The code for a conditional histogram of `age` given `R` is
+And the same graph with more informative labels is
 
 ```{r}
-histogram(~age|R, data=boys)
+ggmice(boys, aes(age)) + 
+  geom_histogram(fill = "white") +
+  facet_wrap(~ factor(
+    is.na(gen), 
+    levels = c(FALSE, TRUE), 
+    labels = c("observed gen", "missing gen")))
 ```
 
 The histogram shows that the missingness in `gen` is not equally distributed across `age`.
@@ -135,7 +144,7 @@ The histogram shows that the missingness in `gen` is not equally distributed acr
 **7. Impute the `boys` dataset with mice using all default settings and name the `mids` (multiply imputed data set) object `imp1`.**
 
 ```{r}
-imp1 <- mice(boys, print=FALSE)
+imp1 <- mice(boys, print = FALSE)
 ```
 
 ------------------------------------------------------------------------
@@ -175,10 +184,10 @@ summary(mammalsleep)
 str(mammalsleep)
 ```
 
-As we have seen before, the function `md.pattern()` can be used to display all different missing data patterns. How many different missing data patterns are present in the `mammalsleep` dataframe and which pattern occurs most frequently in the data?
+As we have seen before, the `mice` function `md.pattern()` (and the `ggmice` function `plot_pattern()`) can be used to display all different missing data patterns. How many different missing data patterns are present in the `mammalsleep` dataframe and which pattern occurs most frequently in the data? 
 
 ```{r}
-md.pattern(mammalsleep)
+plot_pattern(mammalsleep)
 ```
 
 Answer: 8 patterns in total, with the pattern where everything is observed occurring the most (42 times).
@@ -188,13 +197,13 @@ Answer: 8 patterns in total, with the pattern where everything is observed occur
 **10. Generate five imputed datasets with the default method `pmm`. Give the algorithm 10 iterations.**
 
 ```{r, cache=FALSE}
-imp <- mice(mammalsleep, maxit = 10, print=F)
+imp <- mice(mammalsleep, maxit = 10, print = FALSE)
 ```
 
 Inspect the trace lines
 
 ```{r}
-plot(imp)
+plot_trace(imp)
 ```
 
 ------------------------------------------------------------------------
@@ -202,7 +211,7 @@ plot(imp)
 **11. Perform a regression analysis on the imputed dataset** with `sws` as dependent variable and `log(bw)` and `odi` as independent variables.
 
 ```{r}
-fit1 <- with(imp, lm(sws ~ log10(bw) + odi), print=F)
+fit1 <- with(imp, lm(sws ~ log10(bw) + odi), print = FALSE)
 ```
 
 ------------------------------------------------------------------------
@@ -221,7 +230,7 @@ The `fmi` and `lambda` are much too high. This is due to `species` being include
 **13. Impute `mammalsleep` again, but now exclude `species` from the data. Name the new imputed dataset `impnew`.**
 
 ```{r, cache=FALSE}
-impnew <- mice(mammalsleep[ , -1], maxit = 10, print = F)
+impnew <- mice(mammalsleep[ , -1], maxit = 10, print = FALSE)
 ```
 
 ------------------------------------------------------------------------
@@ -241,7 +250,7 @@ Note that the `fmi` and `lambda` have dramatically decreased. The imputation mod
 **15. Plot the trace lines for `impnew`**
 
 ```{r}
-plot(impnew)
+plot_trace(impnew)
 ```
 
 Even though the fraction of information missing due to nonresponse (fmi) and the relative increase in variance due to nonresponse (lambda) are nice and low, the convergence turns out to be a real problem. The reason is the structure in the data. Total sleep (`ts`) is the sum of paradoxical sleep (`ps`) and short wave sleep (`sws`). This relation is ignored in the imputations, but it is necessary to take this relation into account. `mice` offers a routine called passive imputation, which allows users to take transformations, combinations and recoded variables into account when imputing their data.
