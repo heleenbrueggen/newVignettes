@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Mice Development Team">
-<meta name="dcterms.date" content="2024-07-23">
+<meta name="dcterms.date" content="2024-07-29">
 
 <title>newVignettesBook - 7&nbsp; mice: An approach to sensitivity analysis</title>
 <style>
@@ -294,7 +294,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 23, 2024</p>
+      <p class="date">July 29, 2024</p>
     </div>
   </div>
   
@@ -342,12 +342,13 @@ pre { /* Code block - determines code spacing between lines */
 <p>This is a synthetic dataset derived from 956 members of a very old (85+) cohort in Leiden. Unfortunately, we can not share the original leiden dataset with you. Thats why we have provided a synthetic version of leiden dataset. Multiple imputation of original leiden data set has been described in Boshuizen et al (1998), Van Buuren et al (1999) and Van Buuren <span class="citation" data-cites="van2012flexible">(<a href="../references.html#ref-van2012flexible" role="doc-biblioref">2012</a>)</span>, chapter 7.</p>
 <p>The main question is how blood pressure affects mortality risk in the oldest old. We have reasons to mistrust the MAR assumption in this case. In particular, we worried whether the imputations of blood pressure under MAR would be low enough. The sensitivity analysis explores the effect of artificially lowering the imputed blood pressure by deducting an amount of δ from the values imputed under MAR. In order to preserve the relations between the variables, this needs to be done during the iterations.</p>
 <hr>
-<p><strong>1. Open <code>R</code> and load the packages <code>mice</code>, <code>lattice</code> and <code>survival</code>.</strong></p>
+<p><strong>1. Open <code>R</code> and load the packages <code>mice</code>, <code>ggmice</code>, <code>ggplot2</code>, and <code>survival</code>.</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"mice"</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"lattice"</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"survival"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"ggmice"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"ggplot2"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"survival"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <hr>
 <p><strong>2. Overview of data set.</strong></p>
@@ -420,7 +421,7 @@ pre { /* Code block - determines code spacing between lines */
 <hr>
 <p><strong>4. Study the missing data pattern in more detail using <code>md.pattern()</code> and <code>fluxplot()</code>. The interest here focusses on imputing systolic blood pressure (<code>rrsyst</code>) and diastolic blood pressure (<code>rrdiast</code>).</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">md.pattern</span>(synthetic_leiden)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_pattern</span>(synthetic_leiden)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -428,25 +429,7 @@ pre { /* Code block - determines code spacing between lines */
 </figure>
 </div>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>    sexe lftanam dwa survda woon mmse rrsyst rrdiast alb chol    
-621    1       1   1      1    1    1      1       1   1    1   0
-2      1       1   1      1    1    1      1       1   1    0   1
-1      1       1   1      1    1    1      1       1   0    1   1
-149    1       1   1      1    1    1      1       1   0    0   2
-2      1       1   1      1    1    1      1       0   1    1   1
-2      1       1   1      1    1    1      1       0   0    0   3
-72     1       1   1      1    1    1      0       0   1    1   2
-2      1       1   1      1    1    1      0       0   1    0   3
-20     1       1   1      1    1    1      0       0   0    0   4
-21     1       1   1      1    1    0      1       1   1    1   1
-36     1       1   1      1    1    0      1       1   0    0   3
-1      1       1   1      1    1    0      1       0   0    0   4
-7      1       1   1      1    1    0      0       0   1    1   3
-20     1       1   1      1    1    0      0       0   0    0   5
-       0       0   0      0    0   85    121     126 229  232 793</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>fx <span class="ot">&lt;-</span> <span class="fu">fluxplot</span>(synthetic_leiden)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_flux</span>(synthetic_leiden)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -459,7 +442,7 @@ pre { /* Code block - determines code spacing between lines */
 <p>The variables in the upper left corner have the more complete information, so the number of missing data problems for this group is relatively small. The variables in the middle have an outflux between 0.5 and 0.8, which is small. Missing data problems are thus more severe, but potentially this group could also contain important variables. The lower (bottom) variables have an outflux with 0.5 or lower, so their predictive power is limited. Also, this group has a higher influx, and, thus, depend more highly on the imputation model.</p>
 <p>If you’d like this information in tabulated form, you can simply ask</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>fx</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">flux</span>(synthetic_leiden)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>             pobs     influx   outflux      ainb       aout      fico
 sexe    1.0000000 0.00000000 1.0000000 0.0000000 0.09216643 0.3504184
@@ -478,17 +461,17 @@ woon    1.0000000 0.00000000 1.0000000 0.0000000 0.09216643 0.3504184</code></pr
 <p><strong>5. The cases with and without blood pressure observed have very different survival rates. Show this.</strong></p>
 <p>We can see this easily from the Kaplan-Meier plot.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>synthetic_leiden<span class="sc">$</span>dwa <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(synthetic_leiden<span class="sc">$</span>dwa)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>km <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(survda<span class="sc">/</span><span class="dv">365</span>, dwa) <span class="sc">~</span> <span class="fu">is.na</span>(rrsyst), <span class="at">data =</span> synthetic_leiden) </span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(km, </span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">lty  =</span> <span class="dv">1</span>, </span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">lwd  =</span> <span class="fl">1.5</span>, </span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Years since intake"</span>,</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"K-M Survival probability"</span>, <span class="at">las=</span><span class="dv">1</span>, </span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">col  =</span> <span class="fu">c</span>(<span class="fu">mdc</span>(<span class="dv">4</span>), <span class="fu">mdc</span>(<span class="dv">5</span>)), </span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">mark.time =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fl">6.5</span>, <span class="fl">0.7</span>, <span class="st">"BP measured"</span>)</span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">5</span>, <span class="fl">0.3</span>, <span class="st">"BP missing"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>synthetic_leiden<span class="sc">$</span>dwa <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(synthetic_leiden<span class="sc">$</span>dwa)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>km <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(survda<span class="sc">/</span><span class="dv">365</span>, dwa) <span class="sc">~</span> <span class="fu">is.na</span>(rrsyst), <span class="at">data =</span> synthetic_leiden) </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(km, </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">lty  =</span> <span class="dv">1</span>, </span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">lwd  =</span> <span class="fl">1.5</span>, </span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Years since intake"</span>,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"K-M Survival probability"</span>, <span class="at">las=</span><span class="dv">1</span>, </span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">col  =</span> <span class="fu">c</span>(<span class="fu">mdc</span>(<span class="dv">4</span>), <span class="fu">mdc</span>(<span class="dv">5</span>)), </span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">mark.time =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fl">6.5</span>, <span class="fl">0.7</span>, <span class="st">"BP measured"</span>)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">5</span>, <span class="fl">0.3</span>, <span class="st">"BP missing"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -501,27 +484,36 @@ woon    1.0000000 0.00000000 1.0000000 0.0000000 0.09216643 0.3504184</code></pr
 <hr>
 <p><strong>6. Create a</strong> <span class="math inline">\(\delta\)</span> vector that represent the following adjustment values for mmHg: 0 for MAR, and -5, -10, -15, and -20 for MNAR.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="sc">-</span><span class="dv">5</span>, <span class="sc">-</span><span class="dv">10</span>, <span class="sc">-</span><span class="dv">15</span>, <span class="sc">-</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="sc">-</span><span class="dv">5</span>, <span class="sc">-</span><span class="dv">10</span>, <span class="sc">-</span><span class="dv">15</span>, <span class="sc">-</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The recipe for creating MNAR imputations for <span class="math inline">\(\delta \neq 0\)</span> uses the post-processing facility of mice. This allows to change the imputations on the fly by deducting a value of <span class="math inline">\(\delta\)</span> from the values just imputed.</p>
 <hr>
 <p><strong>7. Impute the leiden data using the delta adjustment technique. We only have to deduct from <code>rrsyst</code>, because <code>rrdiast</code> will adapt to the changed <code>rrsyst</code> when it is imputed using <code>rrsyst</code> as predictor. Store the five imputed scenarios (adjustment) in a list called <code>imp.all</code>.</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>imp.all <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"list"</span>, <span class="fu">length</span>(delta))</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>post <span class="ot">&lt;-</span> ini<span class="sc">$</span>post</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(delta)){</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">&lt;-</span> delta[i]</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  cmd <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">"imp[[j]][,i] &lt;- imp[[j]][,i] +"</span>, d)</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  post[<span class="st">"rrsyst"</span>] <span class="ot">&lt;-</span> cmd</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(synthetic_leiden, <span class="at">post =</span> post, <span class="at">maxit =</span> <span class="dv">5</span>, <span class="at">seed =</span> i, <span class="at">print =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  imp.all[[i]] <span class="ot">&lt;-</span> imp</span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>imp.all <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"list"</span>, <span class="fu">length</span>(delta))</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>post <span class="ot">&lt;-</span> ini<span class="sc">$</span>post</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(delta)){</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">&lt;-</span> delta[i]</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  cmd <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">"imp[[j]][,i] &lt;- imp[[j]][,i] +"</span>, d)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  post[<span class="st">"rrsyst"</span>] <span class="ot">&lt;-</span> cmd</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(synthetic_leiden, <span class="at">post =</span> post, <span class="at">maxit =</span> <span class="dv">5</span>, <span class="at">seed =</span> i, <span class="at">print =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  imp.all[[i]] <span class="ot">&lt;-</span> imp</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <hr>
 <p><strong>8. Inspect the imputations. Compare the imputations for blood pressure under the most extreme scenarios with a box-and-whiskers plot. Is this as expected?</strong></p>
 <p>For the scenario where <span class="math inline">\(\delta = 0\)</span> we can plot the first object from the list. This object is the <code>mids</code>-object that considers imputations under no adjustment.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bwplot</span>(imp.all[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bwplot</span>(imp.all[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Hint: Did you know, an equivalent figure can be created with `ggmice()`?
+For example, to plot a variable named 'my_vrb' from a mids object called
+'my_mids', run:
+  ggmice(my_mids, ggplot2::aes(x = .imp, y = my_vrb)) +
+  ggplot2::geom_boxplot()
+ℹ See amices.org/ggmice for more info.
+This message is displayed once per session.</code></pre>
+</div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -547,6 +539,15 @@ woon    1.0000000 0.00000000 1.0000000 0.0000000 0.09216643 0.3504184</code></pr
 <p>For the scenario where<span class="math inline">\(\delta = 0\)</span> we can plot the first object from the list. This object is the <code>mids</code>-object that considers imputations under no adjustment.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">densityplot</span>(imp.all[[<span class="dv">1</span>]], <span class="at">lwd =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Hint: Did you know, an equivalent figure can be created with `ggmice()`?
+For example, to plot a variable named 'my_vrb' from a mids object called
+'my_mids', run:
+  ggmice(my_mids, ggplot2::aes(x = my_vrb, group = .imp)) +
+  ggplot2::geom_density()
+ℹ See amices.org/ggmice for more info.
+This message is displayed once per session.</code></pre>
+</div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -557,7 +558,7 @@ woon    1.0000000 0.00000000 1.0000000 0.0000000 0.09216643 0.3504184</code></pr
 </div>
 <p>For the scenario where <span class="math inline">\(\delta = -20\)</span> we can plot the fifth object from the list. This object is the <code>mids</code>-object that considers imputations under the largest adjustment.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">densityplot</span>(imp.all[[<span class="dv">5</span>]], <span class="at">lwd =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">densityplot</span>(imp.all[[<span class="dv">5</span>]], <span class="at">lwd =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -570,7 +571,16 @@ woon    1.0000000 0.00000000 1.0000000 0.0000000 0.09216643 0.3504184</code></pr
 <hr>
 <p><strong>10. Also create a scatter plot of <code>rrsyst</code> and <code>rrdiast</code> by imputation number and missingness.</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xyplot</span>(imp.all[[<span class="dv">1</span>]], rrsyst <span class="sc">~</span> rrdiast <span class="sc">|</span> .imp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xyplot</span>(imp.all[[<span class="dv">1</span>]], rrsyst <span class="sc">~</span> rrdiast <span class="sc">|</span> .imp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Hint: Did you know, an equivalent figure can be created with `ggmice()`?
+For example, to plot 2 variables named 'my_x' and 'my_y' from a mids object
+called 'my_mids', run:
+  ggmice(my_mids, ggplot2::aes(x = my_x, y = my_y)) +
+  ggplot2::geom_point()
+ℹ See amices.org/ggmice for more info.
+This message is displayed once per session.</code></pre>
+</div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -578,7 +588,7 @@ woon    1.0000000 0.00000000 1.0000000 0.0000000 0.09216643 0.3504184</code></pr
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xyplot</span>(imp.all[[<span class="dv">5</span>]], rrsyst <span class="sc">~</span> rrdiast <span class="sc">|</span> .imp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xyplot</span>(imp.all[[<span class="dv">5</span>]], rrsyst <span class="sc">~</span> rrdiast <span class="sc">|</span> .imp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -597,26 +607,26 @@ woon    1.0000000 0.00000000 1.0000000 0.0000000 0.09216643 0.3504184</code></pr
 </ol>
 <p>In order to automate this step we should create an expression object that performs these stepd for us. The following object does so:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>cda <span class="ot">&lt;-</span> <span class="fu">expression</span>(</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  sbpgp <span class="ot">&lt;-</span> <span class="fu">cut</span>(rrsyst, <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">124</span>, <span class="dv">144</span>, <span class="dv">164</span>, <span class="dv">184</span>, <span class="dv">200</span>, <span class="dv">500</span>)),</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  agegp <span class="ot">&lt;-</span> <span class="fu">cut</span>(lftanam, <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">85</span>, <span class="dv">90</span>, <span class="dv">95</span>, <span class="dv">110</span>)),</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  dead  <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> dwa,</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coxph</span>(<span class="fu">Surv</span>(survda, dead) <span class="sc">~</span> <span class="fu">C</span>(sbpgp, <span class="fu">contr.treatment</span>(<span class="dv">6</span>, <span class="at">base =</span> <span class="dv">3</span>)) <span class="sc">+</span> <span class="fu">strata</span>(sexe, agegp))</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>cda <span class="ot">&lt;-</span> <span class="fu">expression</span>(</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  sbpgp <span class="ot">&lt;-</span> <span class="fu">cut</span>(rrsyst, <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">124</span>, <span class="dv">144</span>, <span class="dv">164</span>, <span class="dv">184</span>, <span class="dv">200</span>, <span class="dv">500</span>)),</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  agegp <span class="ot">&lt;-</span> <span class="fu">cut</span>(lftanam, <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">85</span>, <span class="dv">90</span>, <span class="dv">95</span>, <span class="dv">110</span>)),</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  dead  <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> dwa,</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coxph</span>(<span class="fu">Surv</span>(survda, dead) <span class="sc">~</span> <span class="fu">C</span>(sbpgp, <span class="fu">contr.treatment</span>(<span class="dv">6</span>, <span class="at">base =</span> <span class="dv">3</span>)) <span class="sc">+</span> <span class="fu">strata</span>(sexe, agegp))</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>See Van Buuren <span class="citation" data-cites="van2012flexible">(<a href="../references.html#ref-van2012flexible" role="doc-biblioref">2012, 186</a>)</span> for more information.</p>
 <hr>
 <p><strong>11. Create five fit objects that run the expression <code>cda</code> on the five imputed adjustment scenarios. Use function with().</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">with</span>(imp.all[[<span class="dv">1</span>]], cda)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">with</span>(imp.all[[<span class="dv">2</span>]], cda)</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>fit3 <span class="ot">&lt;-</span> <span class="fu">with</span>(imp.all[[<span class="dv">3</span>]], cda)</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>fit4 <span class="ot">&lt;-</span> <span class="fu">with</span>(imp.all[[<span class="dv">4</span>]], cda)</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>fit5 <span class="ot">&lt;-</span> <span class="fu">with</span>(imp.all[[<span class="dv">5</span>]], cda)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">with</span>(imp.all[[<span class="dv">1</span>]], cda)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">with</span>(imp.all[[<span class="dv">2</span>]], cda)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>fit3 <span class="ot">&lt;-</span> <span class="fu">with</span>(imp.all[[<span class="dv">3</span>]], cda)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>fit4 <span class="ot">&lt;-</span> <span class="fu">with</span>(imp.all[[<span class="dv">4</span>]], cda)</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>fit5 <span class="ot">&lt;-</span> <span class="fu">with</span>(imp.all[[<span class="dv">5</span>]], cda)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Each fit object contains the five imputed Cox proportional hazards models for the adjustment scenario at hand. For example, the <span class="math inline">\(\delta=-10\)</span> scenario is contained in fit3.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>fit3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>fit3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>call :
 with.mids(data = imp.all[[3]], expr = cda)
@@ -739,13 +749,13 @@ n= 956, number of events= 735 </code></pre>
 <hr>
 <p><strong>12. Pool the results for each of the five scenarios.</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>r1 <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">t</span>(<span class="fu">exp</span>(<span class="fu">summary</span>(<span class="fu">pool</span>(fit1))[, <span class="fu">c</span>(<span class="dv">2</span>)])))</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>r2 <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">t</span>(<span class="fu">exp</span>(<span class="fu">summary</span>(<span class="fu">pool</span>(fit2))[, <span class="fu">c</span>(<span class="dv">2</span>)])))</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>r3 <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">t</span>(<span class="fu">exp</span>(<span class="fu">summary</span>(<span class="fu">pool</span>(fit3))[, <span class="fu">c</span>(<span class="dv">2</span>)])))</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>r4 <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">t</span>(<span class="fu">exp</span>(<span class="fu">summary</span>(<span class="fu">pool</span>(fit4))[, <span class="fu">c</span>(<span class="dv">2</span>)])))</span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>r5 <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">t</span>(<span class="fu">exp</span>(<span class="fu">summary</span>(<span class="fu">pool</span>(fit5))[, <span class="fu">c</span>(<span class="dv">2</span>)])))</span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">pool</span>(fit1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>r1 <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">t</span>(<span class="fu">exp</span>(<span class="fu">summary</span>(<span class="fu">pool</span>(fit1))[, <span class="fu">c</span>(<span class="dv">2</span>)])))</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>r2 <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">t</span>(<span class="fu">exp</span>(<span class="fu">summary</span>(<span class="fu">pool</span>(fit2))[, <span class="fu">c</span>(<span class="dv">2</span>)])))</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>r3 <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">t</span>(<span class="fu">exp</span>(<span class="fu">summary</span>(<span class="fu">pool</span>(fit3))[, <span class="fu">c</span>(<span class="dv">2</span>)])))</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>r4 <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">t</span>(<span class="fu">exp</span>(<span class="fu">summary</span>(<span class="fu">pool</span>(fit4))[, <span class="fu">c</span>(<span class="dv">2</span>)])))</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>r5 <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">t</span>(<span class="fu">exp</span>(<span class="fu">summary</span>(<span class="fu">pool</span>(fit5))[, <span class="fu">c</span>(<span class="dv">2</span>)])))</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">pool</span>(fit1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                                     term     estimate std.error   statistic
 1 C(sbpgp, contr.treatment(6, base = 3))1  0.384561979 0.1210874  3.17590376
@@ -763,10 +773,10 @@ n= 956, number of events= 735 </code></pre>
 </div>
 <p>This code grabs the information from the tabulated pooled results that are produced by summary. In order to make sense about these numbers, and to see what exactly is extracted in the above code, laying out the numbers in a proper table may be useful.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">t</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(r1,r2,r3,r4,r5), <span class="at">nrow =</span> <span class="dv">5</span>)),<span class="dv">2</span>)</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">&lt;-</span> pars[, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">5</span>)]</span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(pars) <span class="ot">&lt;-</span> <span class="fu">list</span>(delta, <span class="fu">c</span>(<span class="st">"&lt;125"</span>, <span class="st">"125-140"</span>, <span class="st">"&gt;200"</span>))</span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>pars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">t</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(r1,r2,r3,r4,r5), <span class="at">nrow =</span> <span class="dv">5</span>)),<span class="dv">2</span>)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">&lt;-</span> pars[, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">5</span>)]</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(pars) <span class="ot">&lt;-</span> <span class="fu">list</span>(delta, <span class="fu">c</span>(<span class="st">"&lt;125"</span>, <span class="st">"125-140"</span>, <span class="st">"&gt;200"</span>))</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>pars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    &lt;125 125-140 &gt;200
 0   1.47    1.32 0.89
@@ -780,28 +790,28 @@ n= 956, number of events= 735 </code></pre>
 <hr>
 <p><strong>13. Perform sensitivity analysis analysis on the mammalsleep dataset by adding and subtracting some amount from the imputed values for sws. Use delta &lt;- c(8, 6, 4, 2, 0, -2, -4, -6, -8) and investigating the influence on the following regression model:</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(sws <span class="sc">~</span> <span class="fu">log10</span>(bw) <span class="sc">+</span> odi, <span class="at">data =</span> mammalsleep)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(sws <span class="sc">~</span> <span class="fu">log10</span>(bw) <span class="sc">+</span> odi, <span class="at">data =</span> mammalsleep)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Sensitivity analysis is an important tool for investigating the plausibility of the MAR assumption. We again use the <span class="math inline">\(\delta\)</span>-adjustment technique described in Van Buuren <span class="citation" data-cites="van2012flexible">(<a href="../references.html#ref-van2012flexible" role="doc-biblioref">2012</a>)</span>, p.&nbsp;185] as an informal, simple and direct method to create imputations under nonignorable models. We do so by simply adding and substracting some amount from the imputations.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">8</span>, <span class="dv">6</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="sc">-</span><span class="dv">4</span>, <span class="sc">-</span><span class="dv">6</span>, <span class="sc">-</span><span class="dv">8</span>)</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>ini <span class="ot">&lt;-</span> <span class="fu">mice</span>(mammalsleep[, <span class="sc">-</span><span class="dv">1</span>], <span class="at">maxit=</span><span class="dv">0</span>, <span class="at">print=</span>F)</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>meth<span class="ot">&lt;-</span> ini<span class="sc">$</span>meth</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>meth[<span class="st">"ts"</span>]<span class="ot">&lt;-</span> <span class="st">"~ I(sws + ps)"</span></span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> ini<span class="sc">$</span>pred</span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>pred[<span class="fu">c</span>(<span class="st">"sws"</span>, <span class="st">"ps"</span>), <span class="st">"ts"</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>post <span class="ot">&lt;-</span> ini<span class="sc">$</span>post</span>
-<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>imp.all.undamped <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"list"</span>, <span class="fu">length</span>(delta))</span>
-<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(delta)) {</span>
-<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">&lt;-</span> delta[i]</span>
-<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>  cmd <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">"imp[[j]][, i] &lt;- imp[[j]][, i] +"</span>, d)</span>
-<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>  post[<span class="st">"sws"</span>] <span class="ot">&lt;-</span> cmd</span>
-<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>  imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(mammalsleep[, <span class="sc">-</span><span class="dv">1</span>], <span class="at">meth=</span>meth, <span class="at">pred=</span>pred, <span class="at">post =</span> post, <span class="at">maxit =</span> <span class="dv">10</span>, <span class="at">seed =</span> i <span class="sc">*</span> <span class="dv">22</span>, <span class="at">print=</span><span class="cn">FALSE</span>)</span>
-<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>  imp.all.undamped[[i]] <span class="ot">&lt;-</span> imp</span>
-<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>output <span class="ot">&lt;-</span> <span class="fu">sapply</span>(imp.all.undamped, <span class="cf">function</span>(x) <span class="fu">pool</span>(<span class="fu">with</span>(x, <span class="fu">lm</span>(sws <span class="sc">~</span> <span class="fu">log10</span>(bw) <span class="sc">+</span> odi)))<span class="sc">$</span>pooled<span class="sc">$</span>estimate)</span>
-<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(output) <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">pool</span>(<span class="fu">with</span>(imp.all.undamped[[<span class="dv">1</span>]], <span class="fu">lm</span>(sws <span class="sc">~</span> <span class="fu">log10</span>(bw) <span class="sc">+</span> odi))))<span class="sc">$</span>term</span>
-<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(delta, <span class="fu">as.data.frame</span>(<span class="fu">t</span>(output)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">8</span>, <span class="dv">6</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="sc">-</span><span class="dv">4</span>, <span class="sc">-</span><span class="dv">6</span>, <span class="sc">-</span><span class="dv">8</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>ini <span class="ot">&lt;-</span> <span class="fu">mice</span>(mammalsleep[, <span class="sc">-</span><span class="dv">1</span>], <span class="at">maxit=</span><span class="dv">0</span>, <span class="at">print=</span>F)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>meth<span class="ot">&lt;-</span> ini<span class="sc">$</span>meth</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>meth[<span class="st">"ts"</span>]<span class="ot">&lt;-</span> <span class="st">"~ I(sws + ps)"</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> ini<span class="sc">$</span>pred</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>pred[<span class="fu">c</span>(<span class="st">"sws"</span>, <span class="st">"ps"</span>), <span class="st">"ts"</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>post <span class="ot">&lt;-</span> ini<span class="sc">$</span>post</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>imp.all.undamped <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"list"</span>, <span class="fu">length</span>(delta))</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(delta)) {</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">&lt;-</span> delta[i]</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>  cmd <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">"imp[[j]][, i] &lt;- imp[[j]][, i] +"</span>, d)</span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>  post[<span class="st">"sws"</span>] <span class="ot">&lt;-</span> cmd</span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>  imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(mammalsleep[, <span class="sc">-</span><span class="dv">1</span>], <span class="at">meth=</span>meth, <span class="at">pred=</span>pred, <span class="at">post =</span> post, <span class="at">maxit =</span> <span class="dv">10</span>, <span class="at">seed =</span> i <span class="sc">*</span> <span class="dv">22</span>, <span class="at">print=</span><span class="cn">FALSE</span>)</span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>  imp.all.undamped[[i]] <span class="ot">&lt;-</span> imp</span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>output <span class="ot">&lt;-</span> <span class="fu">sapply</span>(imp.all.undamped, <span class="cf">function</span>(x) <span class="fu">pool</span>(<span class="fu">with</span>(x, <span class="fu">lm</span>(sws <span class="sc">~</span> <span class="fu">log10</span>(bw) <span class="sc">+</span> odi)))<span class="sc">$</span>pooled<span class="sc">$</span>estimate)</span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(output) <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">pool</span>(<span class="fu">with</span>(imp.all.undamped[[<span class="dv">1</span>]], <span class="fu">lm</span>(sws <span class="sc">~</span> <span class="fu">log10</span>(bw) <span class="sc">+</span> odi))))<span class="sc">$</span>term</span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(delta, <span class="fu">as.data.frame</span>(<span class="fu">t</span>(output)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  delta (Intercept)  log10(bw)        odi
 1     8    13.38503 -0.1349983 -1.1122847
@@ -818,7 +828,7 @@ n= 956, number of events= 735 </code></pre>
 <p>The estimates for different <span class="math inline">\(\delta\)</span> are not close. A clear trend for the estimates for the <code>intercept</code> and for <code>bw</code> emerges. Thus, the results are not essentially the same under all specified mechanisms and the outcomes can be deemed sensitive to the assumed mechanism.</p>
 <p>However, in this scenario, the <span class="math inline">\(\delta\)</span> adjustment is completely unrealistic. If we look at the descriptive information for observed <code>sws</code></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mammalsleep<span class="sc">$</span>sws)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mammalsleep<span class="sc">$</span>sws)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
   2.100   6.250   8.350   8.673  11.000  17.900      14 </code></pre>
